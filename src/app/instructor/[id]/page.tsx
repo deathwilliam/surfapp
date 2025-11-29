@@ -4,63 +4,56 @@ import { InstructorHeader } from '@/components/instructor/InstructorHeader';
 import { BookingWidget } from '@/components/instructor/BookingWidget';
 import { Separator } from '@/components/ui/separator';
 
-async function getInstructor(id: string) {
-    const instructor = await prisma.user.findUnique({
-        where: { id },
-        select: {
-            id: true,
-            firstName: true,
-            lastName: true,
-            profileImageUrl: true,
-            instructorProfile: {
-                select: {
-                    id: true,
-                    bio: true,
-                    experienceYears: true,
-                    hourlyRate: true,
-                    averageRating: true,
-                    totalReviews: true,
-                    specialties: true,
-                    isVerified: true,
-                },
-            },
+export default async function InstructorProfilePage({
+    params,
+}: {
+    params: { id: string };
+}) {
+    // Fetch instructor data
+    const user = await prisma.user.findUnique({
+        where: { id: params.id },
+        include: {
+            instructorProfile: true,
         },
     });
 
-    if (!instructor || !instructor.instructorProfile) {
-        return null;
+    if (!user || !user.instructorProfile) {
+        notFound();
     }
 
-    return {
-        id: instructor.id,
-        name: `${instructor.firstName} ${instructor.lastName}`,
-        image: instructor.profileImageUrl,
-        bio: instructor.instructorProfile.bio,
-        experienceYears: instructor.instructorProfile.experienceYears,
-        hourlyRate: Number(instructor.instructorProfile.hourlyRate),
-        rating: Number(instructor.instructorProfile.averageRating),
-        reviewCount: instructor.instructorProfile.totalReviews,
-        specialties: (instructor.instructorProfile.specialties as string[]) || [],
-        isVerified: instructor.instructorProfile.isVerified,
-        locations: [],
-    };
-}
-
-async function getAvailability(instructorId: string) {
-    const slots = await prisma.instructorAvailability.findMany({
+    // Fetch availability
+    const availabilitySlots = await prisma.instructorAvailability.findMany({
         where: {
-            instructorId,
+            instructorId: user.instructorProfile.id,
             date: {
-                gte: new Date(), // Only future slots
+                gte: new Date(),
             },
         },
         orderBy: {
             date: 'asc',
         },
-        take: 30, // Limit to next 30 slots
+        take: 30,
     });
 
-    return slots.map((slot) => ({
+    // Prepare instructor data
+    const instructor = {
+        id: user.id,
+        name: `${user.firstName} ${user.lastName}`,
+        image: user.profileImageUrl,
+        bio: user.instructorProfile.bio,
+        experienceYears: user.instructorProfile.experienceYears,
+        hourlyRate: Number(user.instructorProfile.hourlyRate),
+        rating: Number(user.instructorProfile.averageRating),
+        reviewCount: user.instructorProfile.totalReviews,
+        specialties: Array.isArray(user.instructorProfile.specialties)
+            ? (user.instructorProfile.specialties as string[])
+            : [],
+        isVerified: user.instructorProfile.isVerified,
+        locations: ['Disponible en varias ubicaciones'], // Placeholder
+    };
+
+    // Prepare availability data
+    const availability = availabilitySlots.map((slot) => ({
         id: slot.id,
         date: slot.date,
         startTime: slot.startTime,
@@ -69,28 +62,6 @@ async function getAvailability(instructorId: string) {
         maxStudents: slot.maxStudents,
         currentBookings: slot.currentBookings,
     }));
-}
-
-export default async function InstructorProfilePage({
-    params,
-}: {
-    params: { id: string };
-}) {
-    const instructor = await getInstructor(params.id);
-
-    if (!instructor) {
-        notFound();
-    }
-
-    // Get the instructor profile ID from the user
-    const instructorProfile = await prisma.instructorProfile.findUnique({
-        where: { userId: params.id },
-        select: { id: true },
-    });
-
-    const availability = instructorProfile
-        ? await getAvailability(instructorProfile.id)
-        : [];
 
     return (
         <div className="container py-10">
@@ -116,7 +87,7 @@ export default async function InstructorProfilePage({
                                         Años de experiencia
                                     </p>
                                     <p className="text-lg font-semibold">
-                                        {instructor.experienceYears} años
+                                        {instructor.experienceYears || 0} años
                                     </p>
                                 </div>
                                 <div>
