@@ -1,15 +1,18 @@
 import prisma from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 
-export default async function InstructorProfilePage({
-    params,
-}: {
-    params: { id: string };
-}) {
+interface PageProps {
+    params: Promise<{ id: string }>;
+}
+
+export default async function InstructorProfilePage({ params }: PageProps) {
     try {
+        // Await params in Next.js 15+
+        const { id } = await params;
+
         // Simple query to test database connection
         const user = await prisma.user.findUnique({
-            where: { id: params.id },
+            where: { id },
             select: {
                 id: true,
                 firstName: true,
