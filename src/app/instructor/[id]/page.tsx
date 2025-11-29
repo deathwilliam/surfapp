@@ -77,11 +77,20 @@ export default async function InstructorProfilePage({
     params: { id: string };
 }) {
     const instructor = await getInstructor(params.id);
-    const availability = await getAvailability(params.id);
 
     if (!instructor) {
         notFound();
     }
+
+    // Get the instructor profile ID from the user
+    const instructorProfile = await prisma.instructorProfile.findUnique({
+        where: { userId: params.id },
+        select: { id: true },
+    });
+
+    const availability = instructorProfile
+        ? await getAvailability(instructorProfile.id)
+        : [];
 
     return (
         <div className="container py-10">
