@@ -10,7 +10,7 @@ import {
     DialogTitle,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -94,24 +94,15 @@ export function BookingModal({
                     <div className="grid grid-cols-4 items-center gap-4">
                         <span className="font-bold">Fecha:</span>
                         <span className="col-span-3">
-                            {(() => {
-                                try {
-                                    const dateObj = new Date(slot.date);
-                                    // Check if date is valid and not epoch (unless it's actually 1970)
-                                    if (isNaN(dateObj.getTime()) || dateObj.getFullYear() === 1970) {
-                                        return (
-                                            <span className="text-red-500 text-xs">
-                                                Error fecha: {JSON.stringify(slot.date)}
-                                            </span>
-                                        );
-                                    }
-                                    return format(dateObj, "EEEE d 'de' MMMM", {
-                                        locale: es,
-                                    });
-                                } catch (e) {
-                                    return 'Fecha inválida';
+                            {format(
+                                typeof slot.date === 'string'
+                                    ? parseISO(slot.date)
+                                    : slot.date,
+                                "EEEE d 'de' MMMM",
+                                {
+                                    locale: es,
                                 }
-                            })()}
+                            )}
                         </span>
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
