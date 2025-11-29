@@ -1,4 +1,4 @@
-import { PrismaClient, UserType, StudentLevel } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import { createHash } from 'crypto';
 
 const prisma = new PrismaClient();
@@ -117,7 +117,7 @@ async function main() {
                 firstName: 'Carlos',
                 lastName: 'Martínez',
                 phone: '+503 7123-4567',
-                userType: UserType.student,
+                userType: 'student',
                 emailVerified: new Date(),
             },
         }),
@@ -128,7 +128,7 @@ async function main() {
                 firstName: 'María',
                 lastName: 'López',
                 phone: '+503 7234-5678',
-                userType: UserType.student,
+                userType: 'student',
                 emailVerified: new Date(),
             },
         }),
@@ -139,7 +139,7 @@ async function main() {
                 firstName: 'José',
                 lastName: 'Hernández',
                 phone: '+503 7345-6789',
-                userType: UserType.student,
+                userType: 'student',
                 emailVerified: new Date(),
             },
         }),
@@ -156,7 +156,7 @@ async function main() {
             firstName: 'Roberto',
             lastName: 'Flores',
             phone: '+503 7456-7890',
-            userType: UserType.instructor,
+            userType: 'instructor',
             emailVerified: new Date(),
             instructorProfile: {
                 create: {
@@ -185,7 +185,7 @@ async function main() {
             firstName: 'Ana',
             lastName: 'Ramírez',
             phone: '+503 7567-8901',
-            userType: UserType.instructor,
+            userType: 'instructor',
             emailVerified: new Date(),
             instructorProfile: {
                 create: {
@@ -210,7 +210,7 @@ async function main() {
             firstName: 'Diego',
             lastName: 'Morales',
             phone: '+503 7678-9012',
-            userType: UserType.instructor,
+            userType: 'instructor',
             emailVerified: new Date(),
             instructorProfile: {
                 create: {
@@ -239,7 +239,7 @@ async function main() {
             firstName: 'Lucía',
             lastName: 'Castro',
             phone: '+503 7789-0123',
-            userType: UserType.instructor,
+            userType: 'instructor',
             emailVerified: new Date(),
             instructorProfile: {
                 create: {
@@ -342,7 +342,7 @@ async function main() {
             firstName: 'Admin',
             lastName: 'User',
             phone: '+503 7000-0000',
-            userType: UserType.admin,
+            userType: 'admin',
             emailVerified: new Date(),
         },
     });

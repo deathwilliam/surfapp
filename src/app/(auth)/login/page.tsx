@@ -41,7 +41,17 @@ function LoginForm() {
                 return;
             }
 
-            // Redirect to home and let middleware handle the redirect
+            // After successful sign-in, call server endpoint to set a small HttpOnly
+            // cookie with the user's role so Edge middleware can perform role checks
+            // without importing heavy auth bundles.
+            try {
+                await fetch('/api/auth/set-role-cookie', { method: 'POST', credentials: 'include' });
+            } catch (e) {
+                // Non-fatal: log and continue
+                console.error('Failed to set role cookie', e);
+            }
+
+            // Redirect to home and let middleware handle authentication-based redirects
             router.push('/');
             router.refresh();
         } catch (err: any) {
