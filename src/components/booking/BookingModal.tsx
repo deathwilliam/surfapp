@@ -94,9 +94,24 @@ export function BookingModal({
                     <div className="grid grid-cols-4 items-center gap-4">
                         <span className="font-bold">Fecha:</span>
                         <span className="col-span-3">
-                            {format(new Date(slot.date), "EEEE d 'de' MMMM", {
-                                locale: es,
-                            })}
+                            {(() => {
+                                try {
+                                    const dateObj = new Date(slot.date);
+                                    // Check if date is valid and not epoch (unless it's actually 1970)
+                                    if (isNaN(dateObj.getTime()) || dateObj.getFullYear() === 1970) {
+                                        return (
+                                            <span className="text-red-500 text-xs">
+                                                Error fecha: {JSON.stringify(slot.date)}
+                                            </span>
+                                        );
+                                    }
+                                    return format(dateObj, "EEEE d 'de' MMMM", {
+                                        locale: es,
+                                    });
+                                } catch (e) {
+                                    return 'Fecha inválida';
+                                }
+                            })()}
                         </span>
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
