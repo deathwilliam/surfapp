@@ -5,6 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Calendar, Clock, MapPin, User } from 'lucide-react';
+import Link from 'next/link';
+import { ReviewModal } from '@/components/reviews/ReviewModal';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { BookingStatus } from '@prisma/client';
@@ -28,6 +30,11 @@ async function getStudentBookings(userId: string) {
                 select: {
                     name: true,
                     city: true,
+                },
+            },
+            review: {
+                select: {
+                    id: true,
                 },
             },
         },
@@ -125,6 +132,28 @@ export default async function StudentBookingsPage() {
                                     {booking.status === BookingStatus.pending && (
                                         <Button variant="outline" className="w-full" size="sm">
                                             Cancelar Reserva
+                                        </Button>
+                                    )}
+                                    {booking.status === BookingStatus.confirmed && (
+                                        <Link href={`/bookings/${booking.id}/chat`} className="w-full">
+                                            <Button variant="secondary" className="w-full" size="sm">
+                                                Chat con Instructor
+                                            </Button>
+                                        </Link>
+                                    )}
+                                    {booking.status === BookingStatus.completed && !booking.review && (
+                                        <ReviewModal
+                                            bookingId={booking.id}
+                                            instructorName={booking.instructor.user.firstName}
+                                        >
+                                            <Button variant="outline" className="w-full" size="sm">
+                                                Calificar Clase ⭐
+                                            </Button>
+                                        </ReviewModal>
+                                    )}
+                                    {booking.status === BookingStatus.completed && booking.review && (
+                                        <Button variant="ghost" className="w-full" size="sm" disabled>
+                                            Clase Calificada ✅
                                         </Button>
                                     )}
                                 </CardContent>

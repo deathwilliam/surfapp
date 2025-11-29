@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Calendar, Clock, MapPin, DollarSign } from 'lucide-react';
+import Link from 'next/link';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { BookingStatus, UserType } from '@prisma/client';
@@ -250,6 +251,11 @@ export default async function InstructorBookingsPage() {
                                             <p className="mt-2 font-semibold text-primary">
                                                 ${Number(booking.price)}
                                             </p>
+                                            <Link href={`/bookings/${booking.id}/chat`}>
+                                                <Button variant="ghost" size="sm" className="mt-2">
+                                                    Chat
+                                                </Button>
+                                            </Link>
                                         </div>
                                     </div>
                                 </CardContent>
