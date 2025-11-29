@@ -17,6 +17,7 @@ import { useRouter } from 'next/navigation';
 
 interface TimeSlot {
     id: string;
+    date: Date;
     startTime: Date;
     endTime: Date;
 }
@@ -93,7 +94,7 @@ export function BookingModal({
                     <div className="grid grid-cols-4 items-center gap-4">
                         <span className="font-bold">Fecha:</span>
                         <span className="col-span-3">
-                            {format(new Date(slot.startTime), "EEEE d 'de' MMMM", {
+                            {format(new Date(slot.date), "EEEE d 'de' MMMM", {
                                 locale: es,
                             })}
                         </span>
