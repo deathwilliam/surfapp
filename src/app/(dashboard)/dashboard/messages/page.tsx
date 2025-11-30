@@ -34,7 +34,7 @@ export default async function MessagesPage({
         redirect('/login');
     }
 
-    let bookings;
+    let bookings: Awaited<ReturnType<typeof prisma.booking.findMany>>;
     if (user.userType === 'student') {
         bookings = await prisma.booking.findMany({
             where: { studentId: user.id },
