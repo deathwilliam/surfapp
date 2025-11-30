@@ -4,7 +4,7 @@ import prisma from '@/lib/prisma';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { Calendar, Clock, MapPin, TrendingUp, Award, DollarSign } from 'lucide-react';
+import { Calendar, Clock, MapPin, TrendingUp, Award, DollarSign, MessageSquare } from 'lucide-react';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { BookingStatus } from '@prisma/client';
@@ -204,7 +204,13 @@ export default async function StudentDashboard() {
                                     </div>
                                 </div>
                                 <div className="flex gap-2">
-                                    <Link href="/bookings" className="w-full">
+                                    <Link href={`/dashboard/messages?bookingId=${nextBooking.id}`} className="flex-1">
+                                        <Button variant="outline" className="w-full">
+                                            <MessageSquare className="mr-2 h-4 w-4" />
+                                            Mensaje
+                                        </Button>
+                                    </Link>
+                                    <Link href="/bookings" className="flex-1">
                                         <Button variant="outline" className="w-full">
                                             Ver Detalles
                                         </Button>

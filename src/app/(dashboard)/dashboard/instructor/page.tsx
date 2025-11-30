@@ -4,7 +4,7 @@ import prisma from '@/lib/prisma';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { Calendar, Users, DollarSign, TrendingUp, Clock, MapPin } from 'lucide-react';
+import { Calendar, Users, DollarSign, TrendingUp, Clock, MapPin, MessageSquare } from 'lucide-react';
 import { format, startOfMonth, endOfMonth, eachMonthOfInterval, subMonths } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { BookingStatus, UserType } from '@prisma/client';
@@ -210,7 +210,7 @@ export default async function InstructorDashboard() {
                                                 {booking.student.lastName[0]}
                                             </AvatarFallback>
                                         </Avatar>
-                                        <div className="ml-4 space-y-1">
+                                        <div className="ml-4 flex-1 space-y-1">
                                             <p className="text-sm font-medium leading-none">
                                                 {booking.student.firstName} {booking.student.lastName}
                                             </p>
@@ -223,8 +223,15 @@ export default async function InstructorDashboard() {
                                                 - {booking.location.name}
                                             </p>
                                         </div>
-                                        <div className="ml-auto font-medium">
-                                            +${Number(booking.price)}
+                                        <div className="ml-auto flex items-center gap-2">
+                                            <span className="font-medium">
+                                                +${Number(booking.price)}
+                                            </span>
+                                            <Link href={`/dashboard/messages?bookingId=${booking.id}`}>
+                                                <Button size="sm" variant="ghost">
+                                                    <MessageSquare className="h-4 w-4" />
+                                                </Button>
+                                            </Link>
                                         </div>
                                     </div>
                                 ))
