@@ -12,7 +12,7 @@ import Link from 'next/link';
 export default async function MessagesPage({
     searchParams,
 }: {
-    searchParams: { bookingId?: string };
+    searchParams: Promise<{ bookingId?: string }>;
 }) {
     const session = await auth();
     if (!session?.user?.id) {
