@@ -21,9 +21,10 @@ interface Booking {
     id: string;
     startTime: Date;
     endTime: Date;
-    status: 'PENDING' | 'CONFIRMED' | 'CANCELLED' | 'COMPLETED';
+    status: 'pending' | 'confirmed' | 'cancelled' | 'completed' | 'no_show';
     student: {
-        name: string | null;
+        firstName: string;
+        lastName: string;
         email: string | null;
     };
     location: {
@@ -63,14 +64,14 @@ export function BookingList({ bookings }: BookingListProps) {
     }
 
     const getStatusBadge = (status: string) => {
-        switch (status) {
-            case 'CONFIRMED':
+        switch (status.toLowerCase()) {
+            case 'confirmed':
                 return <Badge className="bg-green-500">Confirmada</Badge>;
-            case 'PENDING':
+            case 'pending':
                 return <Badge variant="secondary">Pendiente</Badge>;
-            case 'CANCELLED':
+            case 'cancelled':
                 return <Badge variant="destructive">Cancelada</Badge>;
-            case 'COMPLETED':
+            case 'completed':
                 return <Badge variant="outline">Completada</Badge>;
             default:
                 return <Badge>{status}</Badge>;
@@ -103,7 +104,7 @@ export function BookingList({ bookings }: BookingListProps) {
                             <TableCell>
                                 <div className="flex flex-col">
                                     <span className="font-medium">
-                                        {booking.student.name || 'Usuario'}
+                                        {`${booking.student.firstName} ${booking.student.lastName}`}
                                     </span>
                                     <span className="text-xs text-muted-foreground">
                                         {booking.student.email}
@@ -126,7 +127,7 @@ export function BookingList({ bookings }: BookingListProps) {
                             <TableCell>{booking.location.name}</TableCell>
                             <TableCell>{getStatusBadge(booking.status)}</TableCell>
                             <TableCell className="text-right">
-                                {booking.status === 'PENDING' && (
+                                {booking.status === 'pending' && (
                                     <div className="flex justify-end gap-2">
                                         <Button
                                             size="sm"

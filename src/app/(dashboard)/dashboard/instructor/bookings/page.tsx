@@ -18,7 +18,8 @@ export default async function BookingsPage() {
         include: {
             student: {
                 select: {
-                    name: true,
+                    firstName: true,
+                    lastName: true,
                     email: true,
                 },
             },
