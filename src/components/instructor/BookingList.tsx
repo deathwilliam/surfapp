@@ -40,7 +40,7 @@ export function BookingList({ bookings }: BookingListProps) {
     const router = useRouter();
     const [processingId, setProcessingId] = useState<string | null>(null);
 
-    async function updateStatus(id: string, status: 'CONFIRMED' | 'CANCELLED') {
+    async function updateStatus(id: string, status: 'confirmed' | 'cancelled') {
         setProcessingId(id);
         try {
             const response = await fetch(`/api/bookings/${id}/status`, {
@@ -52,7 +52,7 @@ export function BookingList({ bookings }: BookingListProps) {
             if (!response.ok) throw new Error('Error al actualizar estado');
 
             toast.success(
-                status === 'CONFIRMED' ? 'Reserva aceptada' : 'Reserva rechazada'
+                status === 'confirmed' ? 'Reserva aceptada' : 'Reserva rechazada'
             );
             router.refresh();
         } catch (error) {
@@ -133,7 +133,7 @@ export function BookingList({ bookings }: BookingListProps) {
                                             size="sm"
                                             variant="outline"
                                             className="h-8 w-8 p-0 text-green-600 hover:text-green-700 hover:bg-green-50"
-                                            onClick={() => updateStatus(booking.id, 'CONFIRMED')}
+                                            onClick={() => updateStatus(booking.id, 'confirmed')}
                                             disabled={!!processingId}
                                         >
                                             {processingId === booking.id ? (
@@ -146,7 +146,7 @@ export function BookingList({ bookings }: BookingListProps) {
                                             size="sm"
                                             variant="outline"
                                             className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50"
-                                            onClick={() => updateStatus(booking.id, 'CANCELLED')}
+                                            onClick={() => updateStatus(booking.id, 'cancelled')}
                                             disabled={!!processingId}
                                         >
                                             {processingId === booking.id ? (

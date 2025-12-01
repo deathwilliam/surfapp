@@ -21,9 +21,9 @@ import { useState } from 'react';
 
 const profileSchema = z.object({
     bio: z.string().min(10, 'La biografía debe tener al menos 10 caracteres'),
-    experienceYears: z.coerce.number().min(0, 'Los años de experiencia no pueden ser negativos'),
-    hourlyRate: z.coerce.number().min(1, 'El precio por hora debe ser mayor a 0'),
-    specialties: z.string().transform((str) => str.split(',').map((s) => s.trim()).filter((s) => s !== '')),
+    experienceYears: z.number().min(0, 'Los años de experiencia no pueden ser negativos'),
+    hourlyRate: z.number().min(1, 'El precio por hora debe ser mayor a 0'),
+    specialties: z.string().min(1, 'Debes agregar al menos una especialidad'),
 });
 
 type ProfileFormValues = {
@@ -120,7 +120,11 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
                             <FormItem>
                                 <FormLabel>Años de Experiencia</FormLabel>
                                 <FormControl>
-                                    <Input type="number" {...field} />
+                                    <Input
+                                        type="number"
+                                        {...field}
+                                        onChange={(e) => field.onChange(e.target.value === '' ? 0 : Number(e.target.value))}
+                                    />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -134,7 +138,12 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
                             <FormItem>
                                 <FormLabel>Precio por Hora ($)</FormLabel>
                                 <FormControl>
-                                    <Input type="number" step="0.01" {...field} />
+                                    <Input
+                                        type="number"
+                                        step="0.01"
+                                        {...field}
+                                        onChange={(e) => field.onChange(e.target.value === '' ? 0 : Number(e.target.value))}
+                                    />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>

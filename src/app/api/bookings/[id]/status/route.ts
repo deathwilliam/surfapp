@@ -1,10 +1,11 @@
 import { auth } from '@/lib/auth';
 import prisma from '@/lib/prisma';
+import { BookingStatus } from '@prisma/client';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 
 const statusSchema = z.object({
-    status: z.enum(['CONFIRMED', 'CANCELLED']),
+    status: z.enum(['confirmed', 'cancelled']),
 });
 
 export async function PATCH(
@@ -30,6 +31,7 @@ export async function PATCH(
         }
 
         const { status } = result.data;
+        const normalizedStatus = status.toLowerCase() as BookingStatus;
 
         // Verify booking ownership
         const booking = await prisma.booking.findUnique({
@@ -53,14 +55,14 @@ export async function PATCH(
         // Update booking status
         const updatedBooking = await prisma.booking.update({
             where: { id },
-            data: { status },
+            data: { status: normalizedStatus },
         });
 
         // If cancelled, free up the slot
-        if (status === 'CANCELLED') {
+        if (normalizedStatus === 'cancelled') {
             await prisma.instructorAvailability.update({
-                where: { id: booking.availabilityId },
-                data: { isBooked: false },
+                where: { id: booking.availabilityId! },
+                data: { isAvailable: true },
             });
         }
 
