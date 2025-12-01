@@ -79,11 +79,10 @@ async function getInstructors(searchParams: {
     }));
 }
 
-export default async function SearchPage({
-    searchParams,
-}: {
-    searchParams: { [key: string]: string | undefined };
+export default async function SearchPage(props: {
+    searchParams: Promise<{ [key: string]: string | undefined }>;
 }) {
+    const searchParams = await props.searchParams;
     const locations = await getLocations();
     const instructors = await getInstructors(searchParams);
 
