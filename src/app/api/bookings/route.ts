@@ -95,3 +95,67 @@ export async function POST(req: Request) {
         );
     }
 }
+
+export async function GET(req: Request) {
+    try {
+        const session = await auth();
+
+        if (!session || !session.user) {
+            return NextResponse.json(
+                { error: 'No autorizado' },
+                { status: 401 }
+            );
+        }
+
+        // Get all bookings for the logged-in user (as student)
+        const bookings = await prisma.booking.findMany({
+            where: { studentId: session.user.id },
+            include: {
+                instructor: {
+                    include: {
+                        user: {
+                            select: {
+                                firstName: true,
+                                lastName: true,
+                                profileImageUrl: true,
+                                email: true,
+                            },
+                        },
+                    },
+                },
+                location: {
+                    select: {
+                        id: true,
+                        name: true,
+                        city: true,
+                        address: true,
+                    },
+                },
+                payment: {
+                    select: {
+                        id: true,
+                        status: true,
+                        amount: true,
+                    },
+                },
+                review: {
+                    select: {
+                        id: true,
+                        rating: true,
+                    },
+                },
+            },
+            orderBy: {
+                bookingDate: 'desc',
+            },
+        });
+
+        return NextResponse.json(bookings);
+    } catch (error) {
+        console.error('Get bookings error:', error);
+        return NextResponse.json(
+            { error: 'Error al obtener reservas' },
+            { status: 500 }
+        );
+    }
+}
