@@ -23,9 +23,10 @@ export async function POST(request: NextRequest) {
 
         const res = NextResponse.json({ ok: true });
 
-        // Set a small HttpOnly cookie with the user role so Edge middleware can read it
+        // Set a small cookie with the user role so Edge middleware can read it
+        // Note: Cannot use HttpOnly here as middleware/Edge needs to read it
         res.cookies.set('user-role', user.userType, {
-            httpOnly: true,
+            httpOnly: false,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'lax',
             path: '/',
