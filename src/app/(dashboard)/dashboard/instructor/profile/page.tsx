@@ -37,13 +37,15 @@ export default async function InstructorProfilePage() {
     return (
         <div className="space-y-6">
             <div>
-                <h3 className="text-lg font-medium">Perfil de Instructor</h3>
+                <h3 className="text-2xl font-bold text-primary">Perfil de Instructor</h3>
                 <p className="text-sm text-muted-foreground">
                     Actualiza tu información pública. Las ubicaciones se configuran al crear horarios disponibles.
                 </p>
             </div>
-            <Separator />
-            <ProfileForm initialData={initialData} availableLocations={locations} />
+            <Separator className="bg-blue-100" />
+            <div className="rounded-xl border border-blue-100 bg-white p-6 shadow-sm">
+                <ProfileForm initialData={initialData} availableLocations={locations} />
+            </div>
         </div>
     );
 }

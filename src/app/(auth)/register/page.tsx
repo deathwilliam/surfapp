@@ -73,10 +73,10 @@ export default function RegisterPage() {
     };
 
     return (
-        <div className="flex min-h-screen items-center justify-center bg-muted/40 px-4 py-12">
-            <div className="w-full max-w-md space-y-8">
+        <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-cyan-500 via-blue-500 to-blue-600 px-4 py-12">
+            <div className="w-full max-w-md space-y-8 rounded-2xl border border-blue-200 bg-white p-8 shadow-2xl">
                 <div className="text-center">
-                    <h1 className="font-heading text-3xl font-bold">Crear Cuenta</h1>
+                    <h1 className="font-heading text-3xl font-bold text-primary">Crear Cuenta</h1>
                     <p className="mt-2 text-muted-foreground">
                         Únete a la comunidad de surf
                     </p>
@@ -95,8 +95,8 @@ export default function RegisterPage() {
                         <div className="grid grid-cols-2 gap-4">
                             <label
                                 className={`flex cursor-pointer items-center justify-center rounded-lg border-2 p-4 transition-colors ${userType === UserType.student
-                                        ? 'border-primary bg-primary/5'
-                                        : 'border-border hover:border-primary/50'
+                                    ? 'border-primary bg-primary/5'
+                                    : 'border-border hover:border-primary/50'
                                     }`}
                             >
                                 <input
@@ -113,8 +113,8 @@ export default function RegisterPage() {
 
                             <label
                                 className={`flex cursor-pointer items-center justify-center rounded-lg border-2 p-4 transition-colors ${userType === UserType.instructor
-                                        ? 'border-primary bg-primary/5'
-                                        : 'border-border hover:border-primary/50'
+                                    ? 'border-primary bg-primary/5'
+                                    : 'border-border hover:border-primary/50'
                                     }`}
                             >
                                 <input

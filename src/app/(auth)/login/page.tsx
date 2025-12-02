@@ -62,9 +62,9 @@ function LoginForm() {
     };
 
     return (
-        <div className="w-full max-w-md space-y-8">
+        <div className="w-full max-w-md space-y-8 rounded-2xl border border-blue-200 bg-white p-8 shadow-2xl">
             <div className="text-center">
-                <h1 className="font-heading text-3xl font-bold">Iniciar Sesión</h1>
+                <h1 className="font-heading text-3xl font-bold text-primary">Iniciar Sesión</h1>
                 <p className="mt-2 text-muted-foreground">
                     Bienvenido de vuelta
                 </p>
@@ -146,7 +146,7 @@ function LoginForm() {
 
 export default function LoginPage() {
     return (
-        <div className="flex min-h-screen items-center justify-center bg-muted/40 px-4 py-12">
+        <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-cyan-500 via-blue-500 to-blue-600 px-4 py-12">
             <Suspense fallback={<div>Cargando...</div>}>
                 <LoginForm />
             </Suspense>

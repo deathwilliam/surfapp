@@ -87,41 +87,57 @@ export default async function SearchPage(props: {
     const instructors = await getInstructors(searchParams);
 
     return (
-        <div className="container py-10">
-            <div className="mb-8">
-                <h1 className="font-heading text-3xl font-bold">Encuentra tu Instructor</h1>
-                <p className="text-muted-foreground">
-                    Explora los mejores instructores de surf en El Salvador
-                </p>
-            </div>
-
-            <div className="grid gap-8 lg:grid-cols-4">
-                {/* Sidebar Filters */}
-                <div className="lg:col-span-1">
-                    <Suspense fallback={<div>Cargando filtros...</div>}>
-                        <SearchFilters locations={locations} />
-                    </Suspense>
+        <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+            {/* Header Section with Ocean Gradient */}
+            <div className="relative overflow-hidden bg-gradient-to-r from-cyan-500 to-blue-600 py-16 text-white">
+                <div className="absolute inset-0 opacity-10">
+                    <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxkZWZzPjxwYXR0ZXJuIGlkPSJ3YXZlcyIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgd2lkdGg9IjEwMCIgaGVpZ2h0PSI1MCI+PHBhdGggZD0iTTAgMjVRMjUgMCA1MCAyNVQxMDAgMjUiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMiIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCN3YXZlcykiLz48L3N2Zz4=')] opacity-30"></div>
                 </div>
 
-                {/* Results Grid */}
-                <div className="lg:col-span-3">
-                    {instructors.length > 0 ? (
-                        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
-                            {instructors.map((instructor) => (
-                                <InstructorCard key={instructor.id} instructor={instructor} />
-                            ))}
-                        </div>
-                    ) : (
-                        <div className="flex h-64 flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center">
-                            <div className="text-4xl">🏄‍♂️</div>
-                            <h3 className="mt-4 text-lg font-semibold">
-                                No se encontraron instructores
-                            </h3>
-                            <p className="text-muted-foreground">
-                                Intenta ajustar tus filtros de búsqueda
-                            </p>
-                        </div>
-                    )}
+                <div className="container relative z-10">
+                    <h1 className="font-heading text-4xl font-bold md:text-5xl">
+                        Encuentra tu Instructor
+                    </h1>
+                    <p className="mt-3 text-lg text-blue-50">
+                        Explora los mejores instructores de surf en El Salvador
+                    </p>
+                    <div className="mt-6 flex items-center gap-2 text-sm">
+                        <span className="rounded-full bg-white/20 px-3 py-1 backdrop-blur-sm">
+                            {instructors.length} instructores disponibles
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div className="container py-10">
+                <div className="grid gap-8 lg:grid-cols-4">
+                    {/* Sidebar Filters */}
+                    <div className="lg:col-span-1">
+                        <Suspense fallback={<div>Cargando filtros...</div>}>
+                            <SearchFilters locations={locations} />
+                        </Suspense>
+                    </div>
+
+                    {/* Results Grid */}
+                    <div className="lg:col-span-3">
+                        {instructors.length > 0 ? (
+                            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
+                                {instructors.map((instructor) => (
+                                    <InstructorCard key={instructor.id} instructor={instructor} />
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="flex h-64 flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center">
+                                <div className="text-4xl">🏄‍♂️</div>
+                                <h3 className="mt-4 text-lg font-semibold">
+                                    No se encontraron instructores
+                                </h3>
+                                <p className="text-muted-foreground">
+                                    Intenta ajustar tus filtros de búsqueda
+                                </p>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
         </div>

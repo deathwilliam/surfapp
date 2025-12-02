@@ -67,23 +67,23 @@ export default async function InstructorProfilePage({ params }: PageProps) {
     }));
 
     return (
-        <div className="container py-10">
+        <div className="min-h-screen bg-gradient-to-b from-blue-50/50 to-white">
             <InstructorHeader instructor={instructor} />
 
-            <Separator className="my-8" />
+            <Separator className="my-8 container" />
 
-            <div className="grid gap-8 lg:grid-cols-3">
+            <div className="container grid gap-8 lg:grid-cols-3">
                 <div className="lg:col-span-2 space-y-8">
                     <section>
-                        <h2 className="mb-4 font-heading text-2xl font-bold">Sobre mí</h2>
+                        <h2 className="mb-4 font-heading text-2xl font-bold text-primary">Sobre mí</h2>
                         <p className="text-muted-foreground whitespace-pre-line">
                             {instructor.bio || 'Este instructor aún no ha agregado una biografía.'}
                         </p>
                     </section>
 
                     <section>
-                        <h2 className="mb-4 font-heading text-2xl font-bold">Experiencia</h2>
-                        <div className="rounded-lg border bg-card p-6">
+                        <h2 className="mb-4 font-heading text-2xl font-bold text-primary">Experiencia</h2>
+                        <div className="rounded-lg border border-blue-100 bg-white shadow-sm p-6">
                             <div className="grid gap-4 sm:grid-cols-2">
                                 <div>
                                     <p className="text-sm font-medium text-muted-foreground">
@@ -108,7 +108,7 @@ export default async function InstructorProfilePage({ params }: PageProps) {
 
                 <div className="lg:col-span-1">
                     <div className="sticky top-24">
-                        <h2 className="mb-4 font-heading text-xl font-bold">
+                        <h2 className="mb-4 font-heading text-xl font-bold text-primary">
                             Reservar Clase
                         </h2>
                         <BookingWidget slots={availability} instructor={instructor} />

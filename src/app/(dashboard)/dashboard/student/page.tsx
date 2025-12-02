@@ -76,7 +76,7 @@ export default async function StudentDashboard() {
         <div className="container py-10">
             <div className="mb-8 flex items-center justify-between">
                 <div>
-                    <h1 className="font-heading text-3xl font-bold">
+                    <h1 className="font-heading text-3xl font-bold text-primary">
                         Hola, {session.user.firstName}! 👋
                     </h1>
                     <p className="text-muted-foreground">
@@ -90,7 +90,7 @@ export default async function StudentDashboard() {
 
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {/* Upcoming Classes Stat */}
-                <Card>
+                <Card className="border-blue-100 bg-gradient-to-br from-white to-blue-50/50 shadow-sm">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">Próximas Clases</CardTitle>
                         <Calendar className="h-4 w-4 text-muted-foreground" />
@@ -106,7 +106,7 @@ export default async function StudentDashboard() {
                 </Card>
 
                 {/* Completed Classes Stat */}
-                <Card>
+                <Card className="border-blue-100 bg-gradient-to-br from-white to-blue-50/50 shadow-sm">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">Clases Completadas</CardTitle>
                         <Award className="h-4 w-4 text-muted-foreground" />
@@ -120,7 +120,7 @@ export default async function StudentDashboard() {
                 </Card>
 
                 {/* Total Spent Stat */}
-                <Card>
+                <Card className="border-blue-100 bg-gradient-to-br from-white to-blue-50/50 shadow-sm">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">Inversión Total</CardTitle>
                         <DollarSign className="h-4 w-4 text-muted-foreground" />
@@ -137,9 +137,9 @@ export default async function StudentDashboard() {
             <div className="mt-10 grid gap-6 md:grid-cols-2">
                 {/* Next Lesson Card */}
                 <div>
-                    <h2 className="mb-4 font-heading text-2xl font-bold">Tu Próxima Clase</h2>
+                    <h2 className="mb-4 font-heading text-2xl font-bold text-primary">Tu Próxima Clase</h2>
                     {nextBooking ? (
-                        <Card className="border-primary">
+                        <Card className="border-blue-200 shadow-md bg-white">
                             <CardHeader>
                                 <div className="flex items-start justify-between">
                                     <div className="flex gap-4">
@@ -186,12 +186,12 @@ export default async function StudentDashboard() {
                                         <Clock className="h-4 w-4 text-muted-foreground" />
                                         <span>
                                             {format(
-                                                new Date(`1970-01-01T${nextBooking.startTime}`),
+                                                new Date(nextBooking.startTime),
                                                 'HH:mm'
                                             )}{' '}
                                             -{' '}
                                             {format(
-                                                new Date(`1970-01-01T${nextBooking.endTime}`),
+                                                new Date(nextBooking.endTime),
                                                 'HH:mm'
                                             )}
                                         </span>
@@ -234,8 +234,8 @@ export default async function StudentDashboard() {
 
                 {/* Recent Activity / Tips */}
                 <div>
-                    <h2 className="mb-4 font-heading text-2xl font-bold">Consejo del Día</h2>
-                    <Card className="h-full bg-secondary/20">
+                    <h2 className="mb-4 font-heading text-2xl font-bold text-primary">Consejo del Día</h2>
+                    <Card className="h-full bg-gradient-to-br from-orange-50 to-orange-100 border-orange-200">
                         <CardContent className="flex h-full flex-col justify-center p-6">
                             <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
                                 <TrendingUp className="h-6 w-6 text-primary" />

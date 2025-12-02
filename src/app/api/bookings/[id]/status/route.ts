@@ -15,7 +15,7 @@ export async function PATCH(
     try {
         const session = await auth();
 
-        if (!session || !session.user || session.user.userType !== 'instructor') {
+        if (!session || !session.user) {
             return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
         }
 
@@ -48,7 +48,11 @@ export async function PATCH(
             );
         }
 
-        if (booking.instructorId !== session.user.id) {
+        // Allow both instructor and student to cancel
+        const isInstructor = session.user.userType === 'instructor' && booking.instructor.userId === session.user.id;
+        const isStudent = session.user.userType === 'student' && booking.studentId === session.user.id;
+
+        if (!isInstructor && !isStudent) {
             return NextResponse.json({ error: 'No autorizado' }, { status: 403 });
         }
 

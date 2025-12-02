@@ -110,7 +110,7 @@ export default async function InstructorDashboard() {
         <div className="container py-10">
             <div className="mb-8 flex items-center justify-between">
                 <div>
-                    <h1 className="font-heading text-3xl font-bold">
+                    <h1 className="font-heading text-3xl font-bold text-primary">
                         Panel de Instructor
                     </h1>
                     <p className="text-muted-foreground">
@@ -129,7 +129,7 @@ export default async function InstructorDashboard() {
 
             {/* Stats Cards */}
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-                <Card>
+                <Card className="border-blue-100 bg-gradient-to-br from-white to-blue-50/50 shadow-sm">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">Ingresos Totales</CardTitle>
                         <DollarSign className="h-4 w-4 text-muted-foreground" />
@@ -141,7 +141,7 @@ export default async function InstructorDashboard() {
                         </p>
                     </CardContent>
                 </Card>
-                <Card>
+                <Card className="border-blue-100 bg-gradient-to-br from-white to-blue-50/50 shadow-sm">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">Estudiantes</CardTitle>
                         <Users className="h-4 w-4 text-muted-foreground" />
@@ -153,7 +153,7 @@ export default async function InstructorDashboard() {
                         </p>
                     </CardContent>
                 </Card>
-                <Card>
+                <Card className="border-blue-100 bg-gradient-to-br from-white to-blue-50/50 shadow-sm">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">Horas Enseñadas</CardTitle>
                         <Clock className="h-4 w-4 text-muted-foreground" />
@@ -165,7 +165,7 @@ export default async function InstructorDashboard() {
                         </p>
                     </CardContent>
                 </Card>
-                <Card>
+                <Card className="border-blue-100 bg-gradient-to-br from-white to-blue-50/50 shadow-sm">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">Clases Activas</CardTitle>
                         <Calendar className="h-4 w-4 text-muted-foreground" />
@@ -181,7 +181,7 @@ export default async function InstructorDashboard() {
 
             <div className="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-7">
                 {/* Chart */}
-                <Card className="col-span-4">
+                <Card className="col-span-4 border-blue-100 shadow-sm">
                     <CardHeader>
                         <CardTitle>Resumen de Ingresos</CardTitle>
                     </CardHeader>
@@ -191,7 +191,7 @@ export default async function InstructorDashboard() {
                 </Card>
 
                 {/* Recent Activity / Upcoming Classes */}
-                <Card className="col-span-3">
+                <Card className="col-span-3 border-blue-100 shadow-sm">
                     <CardHeader>
                         <CardTitle>Próximas Clases</CardTitle>
                     </CardHeader>

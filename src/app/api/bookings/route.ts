@@ -49,7 +49,7 @@ export async function POST(req: Request) {
             // Get instructor profile for pricing
             const instructorProfile = await tx.instructorProfile.findUnique({
                 where: { userId: instructorId },
-                select: { hourlyRate: true },
+                select: { hourlyRate: true, id: true },
             });
 
             if (!instructorProfile) {
@@ -63,7 +63,7 @@ export async function POST(req: Request) {
             const newBooking = await tx.booking.create({
                 data: {
                     studentId: session.user.id,
-                    instructorId,
+                    instructorId: instructorProfile.id,
                     availabilityId,
                     locationId: availability.locationId,
                     bookingDate: availability.date,

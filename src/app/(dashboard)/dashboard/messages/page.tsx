@@ -78,7 +78,7 @@ export default async function MessagesPage() {
 
     return (
         <div className="container py-6">
-            <h1 className="mb-6 font-heading text-3xl font-bold">Mensajes</h1>
+            <h1 className="mb-6 font-heading text-3xl font-bold text-primary">Mensajes</h1>
             <ConversationList conversations={conversations} />
         </div>
     );

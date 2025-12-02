@@ -140,7 +140,7 @@ export function AvailabilityManager({ locations }: AvailabilityManagerProps) {
 
     return (
         <div className="grid gap-6 md:grid-cols-[300px_1fr]">
-            <Card>
+            <Card className="border-blue-100 shadow-sm">
                 <CardContent className="p-4">
                     <Calendar
                         mode="single"
@@ -153,14 +153,14 @@ export function AvailabilityManager({ locations }: AvailabilityManagerProps) {
             </Card>
 
             <div className="space-y-6">
-                <Card>
+                <Card className="border-blue-100 shadow-sm">
                     <CardHeader>
                         <CardTitle>
                             {date ? format(date, "d 'de' MMMM, yyyy", { locale: es }) : 'Selecciona una fecha'}
                         </CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-6">
-                        <div className="flex flex-wrap items-end gap-4 rounded-lg border p-4 bg-muted/50">
+                        <div className="flex flex-wrap items-end gap-4 rounded-lg border border-blue-100 bg-blue-50/30 p-4">
                             <div className="space-y-2">
                                 <label className="text-sm font-medium">Ubicación</label>
                                 <Select value={locationId} onValueChange={setLocationId}>

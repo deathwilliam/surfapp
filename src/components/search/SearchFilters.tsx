@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
 import { StudentLevel } from '@prisma/client';
+import { MapPin, DollarSign, TrendingUp, Filter, X } from 'lucide-react';
 
 interface SearchFiltersProps {
     locations: { id: string; name: string }[];
@@ -58,20 +59,27 @@ export function SearchFilters({ locations }: SearchFiltersProps) {
     };
 
     return (
-        <div className="space-y-6 rounded-lg border bg-card p-6 shadow-sm">
-            <div>
-                <h3 className="font-heading text-lg font-semibold">Filtros</h3>
-                <p className="text-sm text-muted-foreground">
+        <div className="sticky top-24 space-y-6 rounded-lg border border-cyan-200 bg-white shadow-lg">
+            {/* Gradient Header */}
+            <div className="bg-gradient-to-r from-cyan-500 to-blue-600 p-4 text-white">
+                <div className="flex items-center gap-2">
+                    <Filter className="h-5 w-5" />
+                    <h3 className="font-heading text-lg font-semibold">Filtros</h3>
+                </div>
+                <p className="mt-1 text-sm text-blue-50">
                     Encuentra tu instructor ideal
                 </p>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-8 p-6 pt-0">
                 {/* Location Filter */}
-                <div className="space-y-2">
-                    <Label>Ubicación</Label>
+                <div className="space-y-2 mb-4">
+                    <Label className="flex items-center gap-2 text-sm font-medium">
+                        <MapPin className="h-4 w-4 text-cyan-600" />
+                        Ubicación
+                    </Label>
                     <Select value={location} onValueChange={setLocation}>
-                        <SelectTrigger>
+                        <SelectTrigger className="border-cyan-200 focus:ring-cyan-500">
                             <SelectValue placeholder="Selecciona una playa" />
                         </SelectTrigger>
                         <SelectContent>
@@ -86,9 +94,12 @@ export function SearchFilters({ locations }: SearchFiltersProps) {
                 </div>
 
                 {/* Price Filter */}
-                <div className="space-y-2">
-                    <Label>Precio por hora ($)</Label>
-                    <div className="pt-2">
+                <div className="space-y-3">
+                    <Label className="flex items-center gap-2 text-sm font-medium">
+                        <DollarSign className="h-4 w-4 text-cyan-600" />
+                        Precio por hora
+                    </Label>
+                    <div className="rounded-lg bg-cyan-50/50 p-4">
                         <Slider
                             defaultValue={[0, 100]}
                             value={priceRange}
@@ -96,19 +107,23 @@ export function SearchFilters({ locations }: SearchFiltersProps) {
                             max={100}
                             step={5}
                             onValueChange={setPriceRange}
+                            className="[&_[role=slider]]:bg-cyan-600 [&_[role=slider]]:border-cyan-600"
                         />
-                    </div>
-                    <div className="flex justify-between text-sm text-muted-foreground">
-                        <span>${priceRange[0]}</span>
-                        <span>${priceRange[1]}</span>
+                        <div className="mt-3 flex justify-between text-sm font-medium">
+                            <span className="rounded-md bg-white px-2 py-1 shadow-sm">${priceRange[0]}</span>
+                            <span className="rounded-md bg-white px-2 py-1 shadow-sm">${priceRange[1]}</span>
+                        </div>
                     </div>
                 </div>
 
                 {/* Level Filter */}
                 <div className="space-y-2">
-                    <Label>Nivel</Label>
+                    <Label className="flex items-center gap-2 text-sm font-medium">
+                        <TrendingUp className="h-4 w-4 text-cyan-600" />
+                        Nivel
+                    </Label>
                     <Select value={level} onValueChange={setLevel}>
-                        <SelectTrigger>
+                        <SelectTrigger className="border-cyan-200 focus:ring-cyan-500">
                             <SelectValue placeholder="Cualquier nivel" />
                         </SelectTrigger>
                         <SelectContent>
@@ -123,8 +138,15 @@ export function SearchFilters({ locations }: SearchFiltersProps) {
                 </div>
 
                 <div className="flex flex-col gap-2 pt-2">
-                    <Button onClick={applyFilters}>Aplicar Filtros</Button>
-                    <Button variant="outline" onClick={clearFilters}>
+                    <Button
+                        onClick={applyFilters}
+                        className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700"
+                    >
+                        <Filter className="mr-2 h-4 w-4" />
+                        Aplicar Filtros
+                    </Button>
+                    <Button variant="outline" onClick={clearFilters} className="border-cyan-200 hover:bg-cyan-50">
+                        <X className="mr-2 h-4 w-4" />
                         Limpiar
                     </Button>
                 </div>

@@ -19,12 +19,12 @@ export default async function AvailabilityPage() {
     return (
         <div className="space-y-6">
             <div>
-                <h3 className="text-lg font-medium">Gestión de Disponibilidad</h3>
+                <h3 className="text-2xl font-bold text-primary">Gestión de Disponibilidad</h3>
                 <p className="text-sm text-muted-foreground">
                     Configura los horarios en los que estás disponible para dar clases.
                 </p>
             </div>
-            <Separator />
+            <Separator className="bg-blue-100" />
             <AvailabilityManager locations={locations} />
         </div>
     );

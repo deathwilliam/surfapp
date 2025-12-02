@@ -45,7 +45,7 @@ export function ConversationList({ conversations }: ConversationListProps) {
         <div className="grid gap-4">
             {conversations.map((conversation) => (
                 <Link key={conversation.id} href={`/bookings/${conversation.id}/chat`}>
-                    <Card className="transition-colors hover:bg-muted/50">
+                    <Card className="transition-all hover:bg-blue-50/50 hover:border-blue-200 border-blue-100/50 shadow-sm hover:shadow-md">
                         <CardContent className="flex items-center gap-4 p-4">
                             <Avatar className="h-12 w-12">
                                 <AvatarImage src={conversation.otherUser.image || ''} />

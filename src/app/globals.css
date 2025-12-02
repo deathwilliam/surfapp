@@ -52,13 +52,20 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+
+  /* Ocean Gradients */
+  --gradient-ocean: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%);
+  --gradient-ocean-light: linear-gradient(135deg, #38bdf8 0%, #3b82f6 100%);
+  --gradient-ocean-dark: linear-gradient(135deg, #0284c7 0%, #1d4ed8 100%);
+  --gradient-surface: linear-gradient(180deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.4) 100%);
+  --gradient-surface-dark: linear-gradient(180deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.4) 100%);
 }
 
 :root {
   --radius: 0.5rem;
   
   /* Base */
-  --background: 0 0% 100%;
+  --background: 210 40% 98%;
   --foreground: 222 47% 11%;
 
   /* Card */
@@ -69,7 +76,7 @@
   --popover: 0 0% 100%;
   --popover-foreground: 222 47% 11%;
 
-  /* Primary - Ocean Blue #0284c7 */
+  /* Primary - Ocean Blue */
   --primary: 201 96% 32%;
   --primary-foreground: 210 40% 98%;
 
@@ -102,7 +109,7 @@
   --chart-5: 217 91% 60%;
 
   /* Sidebar */
-  --sidebar: 0 0% 98%;
+  --sidebar: 0 0% 100%;
   --sidebar-foreground: 240 5.3% 26.1%;
   --sidebar-primary: 240 5.9% 10%;
   --sidebar-primary-foreground: 0 0% 98%;
