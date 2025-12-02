@@ -1,10 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  experimental: {
-    // Opt-in to proxy instead of deprecated middleware convention
-    proxy: true,
-  },
+  /* config options here */
 };
 
 export default nextConfig;
