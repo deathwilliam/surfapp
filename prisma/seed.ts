@@ -1,12 +1,12 @@
 import { PrismaClient } from '@prisma/client';
-import { createHash } from 'crypto';
+import bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
+const SALT_ROUNDS = 12;
 
-// Helper function to hash passwords (simple hash for demo purposes)
-// In production, use bcrypt or argon2
-function hashPassword(password: string): string {
-    return createHash('sha256').update(password).digest('hex');
+// Hash passwords using bcrypt (same as production)
+async function hashPassword(password: string): Promise<string> {
+    return bcrypt.hash(password, SALT_ROUNDS);
 }
 
 async function main() {
@@ -113,7 +113,7 @@ async function main() {
         prisma.user.create({
             data: {
                 email: 'carlos.martinez@example.com',
-                passwordHash: hashPassword('password123'),
+                passwordHash: await hashPassword('password123'),
                 firstName: 'Carlos',
                 lastName: 'Martínez',
                 phone: '+503 7123-4567',
@@ -124,7 +124,7 @@ async function main() {
         prisma.user.create({
             data: {
                 email: 'maria.lopez@example.com',
-                passwordHash: hashPassword('password123'),
+                passwordHash: await hashPassword('password123'),
                 firstName: 'María',
                 lastName: 'López',
                 phone: '+503 7234-5678',
@@ -135,7 +135,7 @@ async function main() {
         prisma.user.create({
             data: {
                 email: 'jose.hernandez@example.com',
-                passwordHash: hashPassword('password123'),
+                passwordHash: await hashPassword('password123'),
                 firstName: 'José',
                 lastName: 'Hernández',
                 phone: '+503 7345-6789',
@@ -152,7 +152,7 @@ async function main() {
     const instructor1 = await prisma.user.create({
         data: {
             email: 'roberto.surf@example.com',
-            passwordHash: hashPassword('password123'),
+            passwordHash: await hashPassword('password123'),
             firstName: 'Roberto',
             lastName: 'Flores',
             phone: '+503 7456-7890',
@@ -181,7 +181,7 @@ async function main() {
     const instructor2 = await prisma.user.create({
         data: {
             email: 'ana.waves@example.com',
-            passwordHash: hashPassword('password123'),
+            passwordHash: await hashPassword('password123'),
             firstName: 'Ana',
             lastName: 'Ramírez',
             phone: '+503 7567-8901',
@@ -206,7 +206,7 @@ async function main() {
     const instructor3 = await prisma.user.create({
         data: {
             email: 'diego.ocean@example.com',
-            passwordHash: hashPassword('password123'),
+            passwordHash: await hashPassword('password123'),
             firstName: 'Diego',
             lastName: 'Morales',
             phone: '+503 7678-9012',
@@ -235,7 +235,7 @@ async function main() {
     const instructor4 = await prisma.user.create({
         data: {
             email: 'lucia.beach@example.com',
-            passwordHash: hashPassword('password123'),
+            passwordHash: await hashPassword('password123'),
             firstName: 'Lucía',
             lastName: 'Castro',
             phone: '+503 7789-0123',
@@ -338,7 +338,7 @@ async function main() {
     await prisma.user.create({
         data: {
             email: 'admin@surfapp.com',
-            passwordHash: hashPassword('admin123'),
+            passwordHash: await hashPassword('admin123'),
             firstName: 'Admin',
             lastName: 'User',
             phone: '+503 7000-0000',
