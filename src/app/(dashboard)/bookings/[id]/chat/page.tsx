@@ -4,18 +4,19 @@ import prisma from '@/lib/prisma';
 import { ChatWindow } from '@/components/messages/ChatWindow';
 
 interface ChatPageProps {
-    params: {
+    params: Promise<{
         id: string;
-    };
+    }>;
 }
 
 export default async function ChatPage({ params }: ChatPageProps) {
+    const { id } = await params;
     const session = await auth();
     if (!session?.user?.id) {
         redirect('/login');
     }
 
-    const bookingId = params.id;
+    const bookingId = id;
 
     const booking = await prisma.booking.findUnique({
         where: { id: bookingId },
