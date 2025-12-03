@@ -86,6 +86,41 @@ export async function POST(req: Request) {
             return newBooking;
         });
 
+        // Send notification email to instructor
+        try {
+            if (process.env.RESEND_API_KEY) {
+                const { resend } = await import('@/lib/resend');
+                const { BookingNotificationEmail } = await import('@/components/emails/BookingNotificationEmail');
+
+                // Fetch instructor email and details
+                const instructor = await prisma.user.findUnique({
+                    where: { id: instructorId },
+                });
+
+                const location = await prisma.location.findUnique({
+                    where: { id: availability.locationId },
+                });
+
+                if (instructor && location) {
+                    await resend.emails.send({
+                        from: 'SurfConnect <bookings@resend.dev>',
+                        to: instructor.email,
+                        subject: 'Nueva Solicitud de Reserva',
+                        react: BookingNotificationEmail({
+                            instructorName: instructor.firstName,
+                            studentName: session.user.firstName || 'Un estudiante',
+                            date: new Date(availability.date).toLocaleDateString('es-ES'),
+                            time: `${new Date(availability.startTime).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })} - ${new Date(availability.endTime).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}`,
+                            location: location.name,
+                            bookingId: booking.id,
+                        }),
+                    });
+                }
+            }
+        } catch (emailError) {
+            console.error('Error sending booking email:', emailError);
+        }
+
         return NextResponse.json(booking, { status: 201 });
     } catch (error) {
         console.error('Booking error:', error);

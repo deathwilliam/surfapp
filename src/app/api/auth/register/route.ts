@@ -57,6 +57,26 @@ export async function POST(request: NextRequest) {
             },
         });
 
+        // Send welcome email
+        try {
+            if (process.env.RESEND_API_KEY) {
+                const { resend } = await import('@/lib/resend');
+                const { WelcomeEmail } = await import('@/components/emails/WelcomeEmail');
+
+                await resend.emails.send({
+                    from: 'SurfConnect <onboarding@resend.dev>',
+                    to: user.email,
+                    subject: '¡Bienvenido a SurfConnect!',
+                    react: WelcomeEmail({ firstName: user.firstName }),
+                });
+            } else {
+                console.log('RESEND_API_KEY not found, skipping email');
+            }
+        } catch (emailError) {
+            console.error('Error sending welcome email:', emailError);
+            // Don't block registration if email fails
+        }
+
         return NextResponse.json(
             {
                 message: 'Usuario registrado exitosamente',

@@ -177,6 +177,35 @@ export async function PATCH(
             return updated;
         });
 
+        // Send status update email
+        try {
+            if (process.env.RESEND_API_KEY) {
+                const { resend } = await import('@/lib/resend');
+                const { BookingStatusEmail } = await import('@/components/emails/BookingStatusEmail');
+
+                // Determine recipient
+                const recipient = isInstructor ? booking.student : booking.instructor.user;
+
+                // Only send email for relevant statuses
+                if (['confirmed', 'cancelled', 'completed'].includes(status)) {
+                    await resend.emails.send({
+                        from: 'SurfConnect <bookings@resend.dev>',
+                        to: recipient.email,
+                        subject: `Actualización de Reserva: ${status === 'confirmed' ? 'Confirmada' : status === 'cancelled' ? 'Cancelada' : 'Completada'}`,
+                        react: BookingStatusEmail({
+                            userName: recipient.firstName,
+                            status: status as any,
+                            instructorName: booking.instructor.user.firstName,
+                            date: new Date(booking.bookingDate).toLocaleDateString('es-ES'),
+                            time: `${new Date(booking.startTime).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })} - ${new Date(booking.endTime).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}`,
+                        }),
+                    });
+                }
+            }
+        } catch (emailError) {
+            console.error('Error sending status email:', emailError);
+        }
+
         return NextResponse.json(updatedBooking);
     } catch (error) {
         console.error('Update booking status error:', error);
