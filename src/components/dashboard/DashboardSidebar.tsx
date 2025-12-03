@@ -12,7 +12,8 @@ import {
     LogOut,
     Shield,
     Users,
-    BarChart
+    BarChart,
+    MapPin
 } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { UserType } from '@prisma/client';
@@ -39,6 +40,7 @@ export function DashboardSidebar() {
         { href: '/dashboard/admin', label: 'Overview', icon: LayoutDashboard },
         { href: '/dashboard/admin/users', label: 'Usuarios', icon: Users },
         { href: '/dashboard/admin/instructors', label: 'Verificaciones', icon: Shield },
+        { href: '/dashboard/admin/locations', label: 'Ubicaciones', icon: MapPin },
         { href: '/dashboard/admin/stats', label: 'Estadísticas', icon: BarChart },
     ];
 
