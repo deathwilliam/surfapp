@@ -32,8 +32,8 @@ export function BookingStatusBadge({ status }: BookingStatusBadgeProps) {
     const config = statusConfig[status];
 
     return (
-        <Badge variant=\"outline\" className={config.className}>
-    { config.label }
-        </Badge >
+        <Badge variant="outline" className={config.className}>
+            {config.label}
+        </Badge>
     );
 }

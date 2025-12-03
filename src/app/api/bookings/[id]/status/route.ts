@@ -63,7 +63,7 @@ export async function PATCH(
 
             case BookingStatus.cancelled:
                 // Both can cancel, but only pending or confirmed bookings
-                if (![BookingStatus.pending, BookingStatus.confirmed].includes(booking.status)) {
+                if (booking.status !== BookingStatus.pending && booking.status !== BookingStatus.confirmed) {
                     return NextResponse.json(
                         { error: 'No se puede cancelar esta reserva' },
                         { status: 400 }

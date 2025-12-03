@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { useSession } from 'next-auth/react';
 import { UserMenu } from '@/components/auth/UserMenu';
+import { NotificationBell } from '@/components/notifications/NotificationBell';
 
 export function Navbar() {
     const { status } = useSession();
@@ -31,7 +32,10 @@ export function Navbar() {
 
                 <div className="flex items-center gap-4">
                     {isAuthenticated ? (
-                        <UserMenu />
+                        <>
+                            <NotificationBell />
+                            <UserMenu />
+                        </>
                     ) : (
                         <>
                             <Link href="/login">
