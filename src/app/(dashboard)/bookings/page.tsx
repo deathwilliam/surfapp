@@ -2,15 +2,15 @@ import { auth } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import prisma from '@/lib/prisma';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Calendar, Clock, MapPin, User } from 'lucide-react';
+import { Calendar, Clock, MapPin } from 'lucide-react';
 import Link from 'next/link';
 import { ReviewModal } from '@/components/reviews/ReviewModal';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { BookingStatus } from '@prisma/client';
-import { CancelBookingButton } from '@/components/booking/CancelBookingButton';
+import { BookingActions } from '@/components/booking/BookingActions';
+import { BookingStatusBadge } from '@/components/booking/BookingStatusBadge';
 
 async function getStudentBookings(userId: string) {
     const bookings = await prisma.booking.findMany({
@@ -99,19 +99,7 @@ export default async function StudentBookingsPage() {
                                                     Instructor de Surf
                                                 </p>
                                             </div>
-                                            <Badge
-                                                variant={
-                                                    booking.status === BookingStatus.confirmed
-                                                        ? 'default'
-                                                        : 'secondary'
-                                                }
-                                            >
-                                                {booking.status === BookingStatus.confirmed
-                                                    ? 'Confirmada'
-                                                    : booking.status === BookingStatus.pending
-                                                        ? 'Pendiente'
-                                                        : 'Completada'}
-                                            </Badge>
+                                            <BookingStatusBadge status={booking.status} />
                                         </div>
                                     </CardHeader>
                                     <CardContent className="space-y-3">
@@ -141,31 +129,39 @@ export default async function StudentBookingsPage() {
                                                 ${Number(booking.price)}
                                             </p>
                                         </div>
-                                        {booking.status === BookingStatus.pending && (
-                                            <CancelBookingButton bookingId={booking.id} />
-                                        )}
-                                        {booking.status === BookingStatus.confirmed && (
-                                            <Link href={`/bookings/${booking.id}/chat`} className="w-full">
-                                                <Button variant="secondary" className="w-full" size="sm">
-                                                    Chat con Instructor
-                                                </Button>
-                                            </Link>
-                                        )}
-                                        {booking.status === BookingStatus.completed && !booking.review && (
-                                            <ReviewModal
+
+                                        <div className="flex flex-col gap-2 pt-2">
+                                            <BookingActions
                                                 bookingId={booking.id}
-                                                instructorName={booking.instructor.user.firstName}
-                                            >
-                                                <Button variant="outline" className="w-full" size="sm">
-                                                    Calificar Clase ⭐
+                                                currentStatus={booking.status}
+                                                isInstructor={false}
+                                            />
+
+                                            {booking.status === BookingStatus.confirmed && (
+                                                <Link href={`/bookings/${booking.id}/chat`} className="w-full">
+                                                    <Button variant="secondary" className="w-full" size="sm">
+                                                        Chat con Instructor
+                                                    </Button>
+                                                </Link>
+                                            )}
+
+                                            {booking.status === BookingStatus.completed && !booking.review && (
+                                                <ReviewModal
+                                                    bookingId={booking.id}
+                                                    instructorName={booking.instructor.user.firstName}
+                                                >
+                                                    <Button variant="outline" className="w-full" size="sm">
+                                                        Calificar Clase ⭐
+                                                    </Button>
+                                                </ReviewModal>
+                                            )}
+
+                                            {booking.status === BookingStatus.completed && booking.review && (
+                                                <Button variant="ghost" className="w-full" size="sm" disabled>
+                                                    Clase Calificada ✅
                                                 </Button>
-                                            </ReviewModal>
-                                        )}
-                                        {booking.status === BookingStatus.completed && booking.review && (
-                                            <Button variant="ghost" className="w-full" size="sm" disabled>
-                                                Clase Calificada ✅
-                                            </Button>
-                                        )}
+                                            )}
+                                        </div>
                                     </CardContent>
                                 </Card>
                             ))}
@@ -178,7 +174,9 @@ export default async function StudentBookingsPage() {
                                 <p className="mb-4 text-sm text-muted-foreground">
                                     Busca instructores y reserva tu próxima clase de surf
                                 </p>
-                                <Button>Buscar Instructores</Button>
+                                <Link href="/search">
+                                    <Button>Buscar Instructores</Button>
+                                </Link>
                             </CardContent>
                         </Card>
                     )}
@@ -199,11 +197,7 @@ export default async function StudentBookingsPage() {
                                                     {booking.instructor.user.lastName}
                                                 </CardTitle>
                                             </div>
-                                            <Badge variant="outline">
-                                                {booking.status === BookingStatus.completed
-                                                    ? 'Completada'
-                                                    : 'Cancelada'}
-                                            </Badge>
+                                            <BookingStatusBadge status={booking.status} />
                                         </div>
                                     </CardHeader>
                                     <CardContent className="space-y-2">

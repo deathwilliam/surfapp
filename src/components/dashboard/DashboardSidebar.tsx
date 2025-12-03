@@ -9,7 +9,10 @@ import {
     Calendar,
     MessageSquare,
     Settings,
-    LogOut
+    LogOut,
+    Shield,
+    Users,
+    BarChart
 } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { UserType } from '@prisma/client';
@@ -32,7 +35,19 @@ export function DashboardSidebar() {
         { href: '/dashboard/messages', label: 'Mensajes', icon: MessageSquare },
     ];
 
-    const links = userType === UserType.instructor ? instructorLinks : studentLinks;
+    const adminLinks = [
+        { href: '/dashboard/admin', label: 'Overview', icon: LayoutDashboard },
+        { href: '/dashboard/admin/users', label: 'Usuarios', icon: Users },
+        { href: '/dashboard/admin/instructors', label: 'Verificaciones', icon: Shield },
+        { href: '/dashboard/admin/stats', label: 'Estadísticas', icon: BarChart },
+    ];
+
+    let links = studentLinks;
+    if (userType === UserType.instructor) {
+        links = instructorLinks;
+    } else if (userType === 'admin') {
+        links = adminLinks;
+    }
 
     return (
         <aside className="w-64 border-r border-sidebar-border bg-gradient-to-b from-blue-50/50 to-background hidden md:block">
