@@ -51,8 +51,23 @@ function LoginForm() {
                 console.error('Failed to set role cookie', e);
             }
 
-            // Redirect to home and let middleware handle authentication-based redirects
-            router.push('/');
+            // Get user session to determine redirect
+            const response = await fetch('/api/auth/session');
+            const session = await response.json();
+
+            // Redirect based on user type
+            if (session?.user) {
+                const userType = (session.user as any).userType;
+                if (userType === 'admin') {
+                    router.push('/dashboard/admin');
+                } else if (userType === 'instructor') {
+                    router.push('/dashboard/instructor');
+                } else {
+                    router.push('/dashboard/student');
+                }
+            } else {
+                router.push('/');
+            }
             router.refresh();
         } catch (err: any) {
             setError(err.message || 'Error al iniciar sesión');
