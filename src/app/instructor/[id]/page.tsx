@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { InstructorHeader } from '@/components/instructor/InstructorHeader';
 import { BookingWidget } from '@/components/instructor/BookingWidget';
 import { Separator } from '@/components/ui/separator';
+import { ReviewList } from '@/components/reviews/ReviewList';
 
 interface PageProps {
     params: Promise<{ id: string }>;
@@ -36,6 +37,27 @@ export default async function InstructorProfilePage({ params }: PageProps) {
             date: 'asc',
         },
         take: 30,
+    });
+
+    // Fetch reviews
+    const reviews = await prisma.review.findMany({
+        where: {
+            instructorId: user.instructorProfile.id,
+            isVisible: true,
+        },
+        include: {
+            student: {
+                select: {
+                    firstName: true,
+                    lastName: true,
+                    profileImageUrl: true,
+                },
+            },
+        },
+        orderBy: {
+            createdAt: 'desc',
+        },
+        take: 10,
     });
 
     // Prepare instructor data
@@ -102,6 +124,15 @@ export default async function InstructorProfilePage({ params }: PageProps) {
                                     </p>
                                 </div>
                             </div>
+                        </div>
+                    </section>
+
+                    <section>
+                        <h2 className="mb-4 font-heading text-2xl font-bold text-primary">
+                            Reseñas ({instructor.reviewCount})
+                        </h2>
+                        <div className="rounded-lg border border-blue-100 bg-white shadow-sm p-6">
+                            <ReviewList reviews={reviews as any} />
                         </div>
                     </section>
                 </div>

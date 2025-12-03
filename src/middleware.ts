@@ -10,7 +10,9 @@ export default function middleware(req: any) {
     // Check for NextAuth session cookie
     const hasSession =
         cookieHeader.includes('__Secure-next-auth.session-token') ||
-        cookieHeader.includes('next-auth.session-token');
+        cookieHeader.includes('next-auth.session-token') ||
+        cookieHeader.includes('authjs.session-token') ||
+        cookieHeader.includes('__Secure-authjs.session-token');
 
     if (!hasSession) {
         return NextResponse.redirect(new URL('/login', req.url));

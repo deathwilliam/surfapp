@@ -58,6 +58,13 @@ export default function RegisterPage() {
                 // Registration successful but login failed - redirect to login
                 router.push('/login?registered=true');
             } else {
+                // Set role cookie
+                try {
+                    await fetch('/api/auth/set-role-cookie', { method: 'POST', credentials: 'include' });
+                } catch (e) {
+                    console.error('Failed to set role cookie', e);
+                }
+
                 // Both registration and login successful
                 router.push(
                     data.userType === UserType.instructor
