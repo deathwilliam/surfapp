@@ -109,7 +109,7 @@ function LoginForm() {
                         {...register('email')}
                         className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                         placeholder="tu@email.com"
-                        autoComplete="email"
+                        autoComplete="off"
                     />
                     {errors.email && (
                         <p className="text-sm text-destructive">{errors.email.message}</p>
@@ -135,7 +135,7 @@ function LoginForm() {
                         {...register('password')}
                         className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                         placeholder="••••••••"
-                        autoComplete="current-password"
+                        autoComplete="new-password"
                     />
                     {errors.password && (
                         <p className="text-sm text-destructive">{errors.password.message}</p>
