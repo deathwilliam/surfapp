@@ -161,7 +161,7 @@ function LoginForm() {
 
 export default function LoginPage() {
     return (
-        <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-cyan-500 via-blue-500 to-blue-600 px-4 py-12">
+        <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-[#00D4D4] via-[#00B8B8] to-[#FF6B35] px-4 py-12">
             <Suspense fallback={<div>Cargando...</div>}>
                 <LoginForm />
             </Suspense>

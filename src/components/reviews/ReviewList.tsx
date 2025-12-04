@@ -3,7 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { formatDistanceToNow } from 'date-fns';
 import { es } from 'date-fns/locale';
 
-interface Review {
+export interface Review {
     id: string;
     rating: number;
     comment: string | null;

@@ -14,6 +14,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Star } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 interface ReviewModalProps {
     bookingId: string;
@@ -44,15 +45,16 @@ export function ReviewModal({ bookingId, instructorName, children }: ReviewModal
             });
 
             if (response.ok) {
+                toast.success('Reseña enviada correctamente');
                 setOpen(false);
                 router.refresh();
             } else {
                 const data = await response.json();
-                alert(data.error || 'Error al enviar reseña');
+                toast.error(data.error || 'Error al enviar reseña');
             }
         } catch (error) {
             console.error('Error submitting review:', error);
-            alert('Error al enviar reseña');
+            toast.error('Error al enviar reseña');
         } finally {
             setIsSubmitting(false);
         }
@@ -79,8 +81,8 @@ export function ReviewModal({ bookingId, instructorName, children }: ReviewModal
                             >
                                 <Star
                                     className={`h-8 w-8 ${star <= rating
-                                            ? 'fill-yellow-400 text-yellow-400'
-                                            : 'text-muted-foreground/30'
+                                        ? 'fill-yellow-400 text-yellow-400'
+                                        : 'text-muted-foreground/30'
                                         }`}
                                 />
                             </button>

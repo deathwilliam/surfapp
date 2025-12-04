@@ -132,7 +132,7 @@ export default async function InstructorProfilePage({ params }: PageProps) {
                             Reseñas ({instructor.reviewCount})
                         </h2>
                         <div className="rounded-lg border border-blue-100 bg-white shadow-sm p-6">
-                            <ReviewList reviews={reviews as any} />
+                            <ReviewList reviews={reviews} />
                         </div>
                     </section>
                 </div>

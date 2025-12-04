@@ -80,7 +80,7 @@ export default function RegisterPage() {
     };
 
     return (
-        <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-cyan-500 via-blue-500 to-blue-600 px-4 py-12">
+        <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-[#00D4D4] via-[#00B8B8] to-[#FF6B35] px-4 py-12">
             <div className="w-full max-w-md space-y-8 rounded-2xl border border-blue-200 bg-white p-8 shadow-2xl">
                 <div className="text-center">
                     <h1 className="font-heading text-3xl font-bold text-primary">Crear Cuenta</h1>

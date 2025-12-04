@@ -87,19 +87,19 @@ export default async function SearchPage(props: {
     const instructors = await getInstructors(searchParams);
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
-            {/* Header Section with Ocean Gradient */}
-            <div className="relative overflow-hidden bg-gradient-to-r from-cyan-500 to-blue-600 py-16 text-white">
+        <div className="min-h-screen bg-gradient-to-b from-[#FFD23F]/10 to-white">
+            {/* Header Section with Surf City Gradient */}
+            <div className="relative overflow-hidden bg-gradient-to-r from-[#00D4D4] via-[#00B8B8] to-[#FF6B35] py-16 text-white">
                 <div className="absolute inset-0 opacity-10">
                     <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxkZWZzPjxwYXR0ZXJuIGlkPSJ3YXZlcyIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgd2lkdGg9IjEwMCIgaGVpZ2h0PSI1MCI+PHBhdGggZD0iTTAgMjVRMjUgMCA1MCAyNVQxMDAgMjUiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMiIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCN3YXZlcykiLz48L3N2Zz4=')] opacity-30"></div>
                 </div>
 
                 <div className="container relative z-10">
-                    <h1 className="font-heading text-4xl font-bold md:text-5xl">
-                        Encuentra tu Instructor
+                    <h1 className="font-heading text-4xl font-bold md:text-5xl drop-shadow-md">
+                        Encuentra tu Instructor en Surf City
                     </h1>
-                    <p className="mt-3 text-lg text-blue-50">
-                        Explora los mejores instructores de surf en El Salvador
+                    <p className="mt-3 text-lg text-white/95 drop-shadow">
+                        Explora los mejores instructores de surf en El Salvador - El Tunco, El Sunzal, Punta Roca y más
                     </p>
                     <div className="mt-6 flex items-center gap-2 text-sm">
                         <span className="rounded-full bg-white/20 px-3 py-1 backdrop-blur-sm">

@@ -11,8 +11,8 @@ export default function Home() {
       <Navbar />
 
       <main className="flex-1">
-        {/* Hero Section with Ocean Gradient */}
-        <section className="relative overflow-hidden bg-gradient-to-br from-cyan-500 via-blue-500 to-blue-600 py-24 md:py-32 lg:py-40">
+        {/* Hero Section with Surf City Gradient */}
+        <section className="relative overflow-hidden bg-gradient-to-br from-[#00D4D4] via-[#00B8B8] to-[#FF6B35] py-24 md:py-32 lg:py-40">
           {/* Animated Wave Pattern Overlay */}
           <div className="absolute inset-0 opacity-20">
             <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxkZWZzPjxwYXR0ZXJuIGlkPSJ3YXZlcyIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgd2lkdGg9IjEwMCIgaGVpZ2h0PSI1MCI+PHBhdGggZD0iTTAgMjVRMjUgMCA1MCAyNVQxMDAgMjUiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMiIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCN3YXZlcykiLz48L3N2Zz4=')] opacity-30"></div>
@@ -21,7 +21,7 @@ export default function Home() {
           <div className="container relative z-10 flex flex-col items-center text-center text-white">
             <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-white/20 px-4 py-2 backdrop-blur-sm">
               <Waves className="h-4 w-4" />
-              <span className="text-sm font-medium">Plataforma #1 de Surf en El Salvador</span>
+              <span className="text-sm font-medium">Surf City - El Salvador 🇸🇻</span>
             </div>
 
             <h1 className="font-heading text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
@@ -32,19 +32,19 @@ export default function Home() {
               </span>
             </h1>
 
-            <p className="mt-6 max-w-[42rem] text-lg text-blue-50 sm:text-xl md:text-2xl">
-              Conecta con instructores certificados cerca de ti. Reserva clases personalizadas y mejora tu nivel de surf hoy mismo.
+            <p className="mt-6 max-w-[42rem] text-lg text-white/90 sm:text-xl md:text-2xl">
+              Descubre las mejores olas de El Salvador. Conecta con instructores certificados en El Tunco, El Sunzal, Punta Roca y más.
             </p>
 
             <div className="mt-10 flex flex-col gap-4 sm:flex-row">
               <Link href="/search">
-                <Button size="lg" className="h-14 bg-white px-8 text-lg font-semibold text-blue-600 hover:bg-blue-50">
+                <Button size="lg" className="h-14 bg-white px-8 text-lg font-semibold text-[#00B8B8] hover:bg-white/90 hover:scale-105 transition-transform">
                   <Users className="mr-2 h-5 w-5" />
                   Buscar Instructores
                 </Button>
               </Link>
               <Link href="/register?type=instructor">
-                <Button variant="outline" size="lg" className="h-14 border-2 border-white bg-transparent px-8 text-lg font-semibold text-white hover:bg-white/10">
+                <Button variant="outline" size="lg" className="h-14 border-2 border-white bg-transparent px-8 text-lg font-semibold text-white hover:bg-white/20 hover:scale-105 transition-transform">
                   <Award className="mr-2 h-5 w-5" />
                   Soy Instructor
                 </Button>
@@ -91,7 +91,7 @@ export default function Home() {
             <div className="grid gap-8 md:grid-cols-3">
               <Card className="border-2 transition-all hover:border-primary hover:shadow-lg">
                 <CardContent className="flex flex-col items-center p-8 text-center">
-                  <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 text-white">
+                  <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-[#00D4D4] to-[#00B8B8] text-white shadow-lg">
                     <MapPin className="h-8 w-8" />
                   </div>
                   <h3 className="font-heading text-xl font-bold">1. Busca</h3>
@@ -103,7 +103,7 @@ export default function Home() {
 
               <Card className="border-2 transition-all hover:border-primary hover:shadow-lg">
                 <CardContent className="flex flex-col items-center p-8 text-center">
-                  <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 text-white">
+                  <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-[#00D4D4] to-[#00B8B8] text-white shadow-lg">
                     <Calendar className="h-8 w-8" />
                   </div>
                   <h3 className="font-heading text-xl font-bold">2. Reserva</h3>
@@ -115,7 +115,7 @@ export default function Home() {
 
               <Card className="border-2 transition-all hover:border-primary hover:shadow-lg">
                 <CardContent className="flex flex-col items-center p-8 text-center">
-                  <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 text-white">
+                  <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-[#00D4D4] to-[#00B8B8] text-white shadow-lg">
                     <Waves className="h-8 w-8" />
                   </div>
                   <h3 className="font-heading text-xl font-bold">3. Surfea</h3>
@@ -128,18 +128,18 @@ export default function Home() {
           </div>
         </section>
 
-        {/* CTA Section */}
-        <section className="bg-gradient-to-r from-cyan-500 to-blue-600 py-20">
+        {/* CTA Section with Surf City Sunset Gradient */}
+        <section className="bg-gradient-to-r from-[#00D4D4] via-[#FFD23F] to-[#FF6B35] py-20">
           <div className="container text-center text-white">
-            <Star className="mx-auto mb-6 h-12 w-12" />
-            <h2 className="font-heading text-3xl font-bold md:text-4xl">
-              ¿Listo para Conquistar las Olas?
+            <Star className="mx-auto mb-6 h-12 w-12 drop-shadow-lg" />
+            <h2 className="font-heading text-3xl font-bold md:text-4xl drop-shadow-md">
+              ¿Listo para Conquistar las Olas de El Salvador?
             </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-lg text-blue-50">
-              Únete a cientos de surfistas que ya están mejorando su técnica con los mejores instructores de El Salvador
+            <p className="mx-auto mt-4 max-w-2xl text-lg text-white/95 drop-shadow">
+              Únete a cientos de surfistas que ya están mejorando su técnica con los mejores instructores de Surf City
             </p>
             <Link href="/search">
-              <Button size="lg" className="mt-8 h-14 bg-white px-8 text-lg font-semibold text-blue-600 hover:bg-blue-50">
+              <Button size="lg" className="mt-8 h-14 bg-white px-8 text-lg font-semibold text-[#00B8B8] hover:bg-white/90 hover:scale-105 transition-transform shadow-xl">
                 Comenzar Ahora
               </Button>
             </Link>
