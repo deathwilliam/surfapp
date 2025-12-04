@@ -17,7 +17,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Location } from '@prisma/client';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Save, Plus } from 'lucide-react';
 
 const locationSchema = z.object({
     name: z.string().min(2, 'El nombre debe tener al menos 2 caracteres'),
@@ -210,7 +210,13 @@ export function LocationForm({ initialData, onSubmit, isLoading }: LocationFormP
                     />
                 </div>
                 <Button type="submit" disabled={isLoading}>
-                    {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                    {isLoading ? (
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    ) : initialData ? (
+                        <Save className="mr-2 h-4 w-4" />
+                    ) : (
+                        <Plus className="mr-2 h-4 w-4" />
+                    )}
                     {initialData ? 'Actualizar Ubicación' : 'Crear Ubicación'}
                 </Button>
             </form>

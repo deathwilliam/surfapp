@@ -35,8 +35,8 @@ export function Navbar() {
     return (
         <header
             className={`sticky top-0 z-50 w-full border-b transition-all duration-300 ${isScrolled
-                    ? 'bg-background/98 backdrop-blur-md shadow-md'
-                    : 'bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'
+                ? 'bg-background/98 backdrop-blur-md shadow-md'
+                : 'bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'
                 }`}
         >
             <div className="container flex h-16 items-center justify-between">
@@ -89,7 +89,7 @@ export function Navbar() {
                                 </Button>
                             </Link>
                             <Link href="/register">
-                                <Button size="sm" className="bg-gradient-to-r from-[#00D4D4] to-[#00B8B8] hover:from-[#00B8B8] hover:to-[#008B8B] transition-all">
+                                <Button size="sm" className="bg-gradient-to-r from-[#00D4D4] to-[#00B8B8] hover:from-[#00B8B8] hover:to-[#008B8B] text-white transition-all">
                                     Registrarse
                                 </Button>
                             </Link>
@@ -118,8 +118,8 @@ export function Navbar() {
                         <Link
                             href="/search"
                             className={`px-4 py-2 rounded-md transition-colors ${isActive('/search')
-                                    ? 'bg-primary/10 text-primary font-medium'
-                                    : 'hover:bg-accent'
+                                ? 'bg-primary/10 text-primary font-medium'
+                                : 'hover:bg-accent'
                                 }`}
                         >
                             Buscar Instructores
@@ -127,8 +127,8 @@ export function Navbar() {
                         <Link
                             href="/how-it-works"
                             className={`px-4 py-2 rounded-md transition-colors ${isActive('/how-it-works')
-                                    ? 'bg-primary/10 text-primary font-medium'
-                                    : 'hover:bg-accent'
+                                ? 'bg-primary/10 text-primary font-medium'
+                                : 'hover:bg-accent'
                                 }`}
                         >
                             Cómo funciona
@@ -148,7 +148,7 @@ export function Navbar() {
                                         </Button>
                                     </Link>
                                     <Link href="/register" className="w-full">
-                                        <Button className="w-full bg-gradient-to-r from-[#00D4D4] to-[#00B8B8]">
+                                        <Button className="w-full bg-gradient-to-r from-[#00D4D4] to-[#00B8B8] text-white">
                                             Registrarse
                                         </Button>
                                     </Link>

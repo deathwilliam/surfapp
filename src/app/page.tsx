@@ -3,18 +3,33 @@ import { Footer } from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import Link from 'next/link';
-import { Waves, Calendar, Star, MapPin, Users, Award } from 'lucide-react';
+import { Waves, Calendar, Star, MapPin, Users, Award, Compass } from 'lucide-react';
+import prisma from '@/lib/prisma';
 
-export default function Home() {
+// Landing page with dynamic beach locations
+export default async function Home() {
+  const locations = await prisma.location.findMany({
+    where: { isActive: true },
+    take: 9,
+  });
   return (
     <div className="flex min-h-screen flex-col">
       <Navbar />
 
       <main className="flex-1">
-        {/* Hero Section with Surf City Gradient */}
-        <section className="relative overflow-hidden bg-gradient-to-br from-[#00D4D4] via-[#00B8B8] to-[#FF6B35] py-24 md:py-32 lg:py-40">
+        {/* Hero Section with Surf City Gradient & Beach Background */}
+        <section className="relative overflow-hidden bg-gradient-to-br from-primary via-secondary to-accent py-24 md:py-32 lg:py-40">
+          {/* Beach Background Image */}
+          <div className="absolute inset-0 opacity-70">
+            <div
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              style={{ backgroundImage: 'url(/images/beaches/el-tunco.png)' }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/60 to-secondary/60" />
+          </div>
+
           {/* Animated Wave Pattern Overlay */}
-          <div className="absolute inset-0 opacity-20">
+          <div className="absolute inset-0 opacity-10">
             <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxkZWZzPjxwYXR0ZXJuIGlkPSJ3YXZlcyIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgd2lkdGg9IjEwMCIgaGVpZ2h0PSI1MCI+PHBhdGggZD0iTTAgMjVRMjUgMCA1MCAyNVQxMDAgMjUiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMiIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCN3YXZlcykiLz48L3N2Zz4=')] opacity-30"></div>
           </div>
 
@@ -28,23 +43,23 @@ export default function Home() {
               Encuentra tu{' '}
               <span className="relative inline-block">
                 <span className="relative z-10">Instructor de Surf</span>
-                <span className="absolute bottom-2 left-0 h-3 w-full bg-yellow-400/50"></span>
+                <span className="absolute bottom-2 left-0 h-3 w-full bg-accent/50"></span>
               </span>
             </h1>
 
-            <p className="mt-6 max-w-[42rem] text-lg text-white/90 sm:text-xl md:text-2xl">
+            <p className="mt-6 max-w-[42rem] text-lg text-white/95 sm:text-xl md:text-2xl drop-shadow-lg">
               Descubre las mejores olas de El Salvador. Conecta con instructores certificados en El Tunco, El Sunzal, Punta Roca y más.
             </p>
 
             <div className="mt-10 flex flex-col gap-4 sm:flex-row">
               <Link href="/search">
-                <Button size="lg" className="h-14 bg-white px-8 text-lg font-semibold text-[#00B8B8] hover:bg-white/90 hover:scale-105 transition-transform">
+                <Button size="lg" className="h-14 bg-white px-8 text-lg font-semibold hover:bg-white/90 hover:scale-105 transition-transform shadow-xl" style={{ color: '#00acc1' }}>
                   <Users className="mr-2 h-5 w-5" />
                   Buscar Instructores
                 </Button>
               </Link>
               <Link href="/register?type=instructor">
-                <Button variant="outline" size="lg" className="h-14 border-2 border-white bg-transparent px-8 text-lg font-semibold text-white hover:bg-white/20 hover:scale-105 transition-transform">
+                <Button size="lg" className="h-14 bg-white px-8 text-lg font-semibold hover:bg-white/90 hover:scale-105 transition-transform shadow-xl" style={{ color: '#00acc1' }}>
                   <Award className="mr-2 h-5 w-5" />
                   Soy Instructor
                 </Button>
@@ -55,15 +70,15 @@ export default function Home() {
             <div className="mt-16 grid grid-cols-3 gap-8 md:gap-12">
               <div>
                 <div className="text-3xl font-bold md:text-4xl">500+</div>
-                <div className="mt-1 text-sm text-blue-100">Clases Impartidas</div>
+                <div className="mt-1 text-sm text-white/90">Clases Impartidas</div>
               </div>
               <div>
                 <div className="text-3xl font-bold md:text-4xl">50+</div>
-                <div className="mt-1 text-sm text-blue-100">Instructores</div>
+                <div className="mt-1 text-sm text-white/90">Instructores</div>
               </div>
               <div>
                 <div className="text-3xl font-bold md:text-4xl">4.9</div>
-                <div className="mt-1 text-sm text-blue-100">Rating Promedio</div>
+                <div className="mt-1 text-sm text-white/90">Rating Promedio</div>
               </div>
             </div>
           </div>
@@ -91,7 +106,7 @@ export default function Home() {
             <div className="grid gap-8 md:grid-cols-3">
               <Card className="border-2 transition-all hover:border-primary hover:shadow-lg">
                 <CardContent className="flex flex-col items-center p-8 text-center">
-                  <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-[#00D4D4] to-[#00B8B8] text-white shadow-lg">
+                  <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-[#0E225C] to-[#1E73BE] text-white shadow-lg">
                     <MapPin className="h-8 w-8" />
                   </div>
                   <h3 className="font-heading text-xl font-bold">1. Busca</h3>
@@ -103,7 +118,7 @@ export default function Home() {
 
               <Card className="border-2 transition-all hover:border-primary hover:shadow-lg">
                 <CardContent className="flex flex-col items-center p-8 text-center">
-                  <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-[#00D4D4] to-[#00B8B8] text-white shadow-lg">
+                  <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-[#0E225C] to-[#1E73BE] text-white shadow-lg">
                     <Calendar className="h-8 w-8" />
                   </div>
                   <h3 className="font-heading text-xl font-bold">2. Reserva</h3>
@@ -115,7 +130,7 @@ export default function Home() {
 
               <Card className="border-2 transition-all hover:border-primary hover:shadow-lg">
                 <CardContent className="flex flex-col items-center p-8 text-center">
-                  <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-[#00D4D4] to-[#00B8B8] text-white shadow-lg">
+                  <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-[#0E225C] to-[#1E73BE] text-white shadow-lg">
                     <Waves className="h-8 w-8" />
                   </div>
                   <h3 className="font-heading text-xl font-bold">3. Surfea</h3>
@@ -128,9 +143,86 @@ export default function Home() {
           </div>
         </section>
 
-        {/* CTA Section with Surf City Sunset Gradient */}
-        <section className="bg-gradient-to-r from-[#00D4D4] via-[#FFD23F] to-[#FF6B35] py-20">
-          <div className="container text-center text-white">
+        {/* Surf Beaches Section */}
+        <section className="py-20 md:py-28 bg-gradient-to-b from-white to-blue-50/30">
+          <div className="container">
+            <div className="mb-16 text-center">
+              <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2">
+                <Compass className="h-4 w-4 text-primary" />
+                <span className="text-sm font-medium text-primary">Surf City El Salvador</span>
+              </div>
+              <h2 className="font-heading text-3xl font-bold md:text-4xl">
+                Playas de Surf en El Salvador
+              </h2>
+              <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
+                Descubre las mejores olas de Centroamérica en nuestras playas de clase mundial
+              </p>
+            </div>
+
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {locations.map((location) => (
+                <Card key={location.id} className="group overflow-hidden border-2 transition-all hover:border-primary hover:shadow-xl">
+                  <div className="relative h-48 overflow-hidden">
+                    <div
+                      className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                      style={{ backgroundImage: `url(${location.imageUrl || '/images/placeholder-beach.jpg'})` }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-black/20" />
+                    <div className="absolute bottom-4 left-4 right-4">
+                      <h3 className="font-heading text-2xl font-bold text-white drop-shadow-lg">{location.name}</h3>
+                      <p className="text-sm text-white/90">{location.city}</p>
+                    </div>
+                    {location.difficulty && (
+                      <div className="absolute top-4 right-4">
+                        <span className={`rounded-full px-3 py-1 text-xs font-semibold text-white ${location.difficulty === 'Experto' ? 'bg-red-500' :
+                          location.difficulty === 'Intermedio' ? 'bg-orange-500' :
+                            location.difficulty === 'Principiante' ? 'bg-green-500' :
+                              'bg-blue-500'
+                          }`}>
+                          {location.difficulty}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                  <CardContent className="p-6">
+                    <p className="text-sm text-muted-foreground line-clamp-3">
+                      {location.description}
+                    </p>
+                    {location.surfType && (
+                      <div className="mt-4 flex items-center gap-2 text-xs text-muted-foreground">
+                        <Waves className="h-4 w-4" />
+                        <span>{location.surfType}</span>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            <div className="mt-12 text-center">
+              <Link href="/search">
+                <Button size="lg" className="h-12 px-8">
+                  <MapPin className="mr-2 h-5 w-5" />
+                  Explorar Todas las Playas
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </section>
+
+
+        {/* CTA Section with Surf City Gradient & Beach Background */}
+        <section className="relative overflow-hidden bg-gradient-to-r from-primary via-secondary to-accent py-20">
+          {/* Beach Background */}
+          <div className="absolute inset-0 opacity-80">
+            <div
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              style={{ backgroundImage: 'url(/images/beaches/el-zonte.png)' }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/70 to-secondary/70" />
+          </div>
+
+          <div className="container relative z-10 text-center text-white">
             <Star className="mx-auto mb-6 h-12 w-12 drop-shadow-lg" />
             <h2 className="font-heading text-3xl font-bold md:text-4xl drop-shadow-md">
               ¿Listo para Conquistar las Olas de El Salvador?
@@ -139,7 +231,8 @@ export default function Home() {
               Únete a cientos de surfistas que ya están mejorando su técnica con los mejores instructores de Surf City
             </p>
             <Link href="/search">
-              <Button size="lg" className="mt-8 h-14 bg-white px-8 text-lg font-semibold text-[#00B8B8] hover:bg-white/90 hover:scale-105 transition-transform shadow-xl">
+              <Button size="lg" className="mt-8 h-14 bg-white px-8 text-lg font-semibold text-primary hover:bg-white/90 hover:scale-105 transition-transform shadow-2xl border-2 border-white">
+                <Waves className="mr-2 h-5 w-5" />
                 Comenzar Ahora
               </Button>
             </Link>

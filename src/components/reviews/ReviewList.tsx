@@ -24,6 +24,7 @@ export function ReviewList({ reviews }: ReviewListProps) {
         return (
             <div className="text-center py-8 text-muted-foreground">
                 <p>Este instructor aún no tiene reseñas.</p>
+                <p className="text-sm mt-2">¡Sé el primero en reservar una clase y compartir tu experiencia!</p>
             </div>
         );
     }

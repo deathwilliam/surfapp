@@ -105,6 +105,8 @@ model Location {
   longitude   Decimal  @db.Decimal(11, 8)
   description String?  @db.Text
   imageUrl    String?  @map("image_url")
+  difficulty  String?  @db.VarChar(50)
+  surfType    String?  @map("surf_type") @db.VarChar(100)
   isActive    Boolean  @default(true) @map("is_active")
   createdAt   DateTime @default(now()) @map("created_at")
 

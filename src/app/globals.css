@@ -53,12 +53,12 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 
-  /* Surf City Gradients - Inspired by El Salvador's vibrant coastal culture */
-  --gradient-surf-city: linear-gradient(135deg, #00D4D4 0%, #00B8B8 50%, #008B8B 100%);
-  --gradient-sunset: linear-gradient(135deg, #FF6B35 0%, #F7931E 50%, #FFA500 100%);
-  --gradient-tropical: linear-gradient(135deg, #00D4D4 0%, #FFD23F 100%);
-  --gradient-ocean-wave: linear-gradient(135deg, #00B8B8 0%, #2ECC71 100%);
-  --gradient-beach: linear-gradient(180deg, #FFD23F 0%, #FFA500 100%);
+  /* Surf City Gradients - Official El Salvador Surf City Brand Colors */
+  --gradient-surf-city: linear-gradient(135deg, #0E225C 0%, #1E73BE 50%, #98C3D1 100%);
+  --gradient-ocean-deep: linear-gradient(135deg, #0E225C 0%, #1E73BE 100%);
+  --gradient-coastal: linear-gradient(135deg, #1E73BE 0%, #98C3D1 100%);
+  --gradient-wave: linear-gradient(180deg, #98C3D1 0%, #1E73BE 100%);
+  --gradient-hero: linear-gradient(135deg, rgba(14, 34, 92, 0.95) 0%, rgba(30, 115, 190, 0.85) 100%);
   --gradient-surface: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.6) 100%);
   --gradient-surface-dark: linear-gradient(180deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.6) 100%);
 }
@@ -78,52 +78,52 @@
   --popover: 0 0% 100%;
   --popover-foreground: 200 30% 15%;
 
-  /* Primary - Surf City Turquoise #00D4D4 */
-  --primary: 180 100% 42%;
+  /* Primary - Surf City Downriver Blue #0E225C */
+  --primary: 225 74% 21%;
   --primary-foreground: 0 0% 100%;
 
-  /* Secondary - Sunset Orange #FF6B35 */
-  --secondary: 16 100% 60%;
+  /* Secondary - Surf City Mariner Blue #1E73BE */
+  --secondary: 208 73% 43%;
   --secondary-foreground: 0 0% 100%;
 
-  /* Muted - Soft sand tones */
-  --muted: 45 30% 94%;
-  --muted-foreground: 200 15% 45%;
+  /* Muted - Soft coastal tones */
+  --muted: 210 30% 94%;
+  --muted-foreground: 210 15% 45%;
 
-  /* Accent - Sandy Yellow #FFD23F */
-  --accent: 48 100% 62%;
-  --accent-foreground: 200 30% 15%;
+  /* Accent - Surf City Half Baked Cyan #98C3D1 */
+  --accent: 195 38% 71%;
+  --accent-foreground: 225 74% 21%;
 
   /* Destructive */
   --destructive: 0 84.2% 60.2%;
   --destructive-foreground: 0 0% 100%;
 
   /* Border/Input/Ring */
-  --border: 45 25% 88%;
-  --input: 45 25% 88%;
-  --ring: 180 100% 42%;
+  --border: 210 25% 88%;
+  --input: 210 25% 88%;
+  --ring: 208 73% 43%;
 
   /* Charts - Surf City palette */
-  --chart-1: 180 100% 42%;
-  /* Turquoise */
-  --chart-2: 16 100% 60%;
-  /* Orange */
-  --chart-3: 48 100% 62%;
-  /* Yellow */
-  --chart-4: 145 63% 49%;
-  /* Green */
-  --chart-5: 16 100% 66%;
-  /* Coral */
+  --chart-1: 225 74% 21%;
+  /* Downriver */
+  --chart-2: 208 73% 43%;
+  /* Mariner */
+  --chart-3: 195 38% 71%;
+  /* Half Baked */
+  --chart-4: 208 73% 35%;
+  /* Darker Mariner */
+  --chart-5: 195 38% 60%;
+  /* Darker Half Baked */
 
   /* Sidebar */
   --sidebar: 0 0% 100%;
-  --sidebar-foreground: 200 20% 30%;
-  --sidebar-primary: 180 100% 42%;
+  --sidebar-foreground: 210 20% 30%;
+  --sidebar-primary: 225 74% 21%;
   --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: 45 30% 96%;
-  --sidebar-accent-foreground: 200 30% 15%;
-  --sidebar-border: 45 20% 90%;
-  --sidebar-ring: 180 100% 42%;
+  --sidebar-accent: 210 30% 96%;
+  --sidebar-accent-foreground: 225 74% 21%;
+  --sidebar-border: 210 20% 90%;
+  --sidebar-ring: 208 73% 43%;
 }
 
 .dark {
@@ -139,52 +139,52 @@
   --popover: 200 35% 12%;
   --popover-foreground: 45 30% 95%;
 
-  /* Primary - Surf City Turquoise (slightly brighter for dark mode) */
-  --primary: 180 100% 45%;
+  /* Primary - Surf City Downriver Blue (brighter for dark mode) */
+  --primary: 225 74% 28%;
   --primary-foreground: 0 0% 100%;
 
-  /* Secondary - Sunset Orange */
-  --secondary: 16 100% 60%;
+  /* Secondary - Surf City Mariner Blue (brighter) */
+  --secondary: 208 73% 50%;
   --secondary-foreground: 0 0% 100%;
 
   /* Muted */
-  --muted: 200 30% 18%;
-  --muted-foreground: 45 20% 70%;
+  --muted: 210 30% 18%;
+  --muted-foreground: 210 20% 70%;
 
-  /* Accent */
-  --accent: 200 30% 18%;
-  --accent-foreground: 45 30% 95%;
+  /* Accent - Surf City Half Baked Cyan (brighter) */
+  --accent: 195 38% 75%;
+  --accent-foreground: 225 74% 21%;
 
   /* Destructive */
   --destructive: 0 62.8% 50%;
   --destructive-foreground: 0 0% 100%;
 
   /* Border/Input/Ring */
-  --border: 200 25% 20%;
-  --input: 200 25% 20%;
-  --ring: 180 100% 45%;
+  --border: 210 25% 20%;
+  --input: 210 25% 20%;
+  --ring: 208 73% 50%;
 
   /* Charts - Surf City palette */
-  --chart-1: 180 100% 45%;
-  /* Turquoise */
-  --chart-2: 16 100% 60%;
-  /* Orange */
-  --chart-3: 48 100% 62%;
-  /* Yellow */
-  --chart-4: 145 63% 49%;
-  /* Green */
-  --chart-5: 16 100% 66%;
-  /* Coral */
+  --chart-1: 225 74% 28%;
+  /* Downriver */
+  --chart-2: 208 73% 50%;
+  /* Mariner */
+  --chart-3: 195 38% 75%;
+  /* Half Baked */
+  --chart-4: 208 73% 40%;
+  /* Darker Mariner */
+  --chart-5: 195 38% 65%;
+  /* Darker Half Baked */
 
   /* Sidebar */
-  --sidebar: 200 40% 10%;
-  --sidebar-foreground: 45 20% 85%;
-  --sidebar-primary: 180 100% 45%;
+  --sidebar: 210 40% 10%;
+  --sidebar-foreground: 210 20% 85%;
+  --sidebar-primary: 225 74% 28%;
   --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: 200 30% 15%;
-  --sidebar-accent-foreground: 45 20% 85%;
-  --sidebar-border: 200 25% 18%;
-  --sidebar-ring: 180 100% 45%;
+  --sidebar-accent: 210 30% 15%;
+  --sidebar-accent-foreground: 210 20% 85%;
+  --sidebar-border: 210 25% 18%;
+  --sidebar-ring: 208 73% 50%;
 }
 
 @layer base {

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Star, MapPin, Award } from 'lucide-react';
+import { Star, MapPin, Award, Eye } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -89,6 +89,7 @@ export function InstructorCard({ instructor }: InstructorCardProps) {
             <CardFooter className="bg-gradient-to-r from-cyan-50/50 to-blue-50/50 p-4">
                 <Link href={`/instructor/${instructor.id}`} className="w-full">
                     <Button className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700">
+                        <Eye className="mr-2 h-4 w-4" />
                         Ver Perfil
                     </Button>
                 </Link>

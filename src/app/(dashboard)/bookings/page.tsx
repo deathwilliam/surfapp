@@ -148,7 +148,7 @@ export default async function StudentBookingsPage() {
                                             {booking.status === BookingStatus.completed && !booking.review && (
                                                 <ReviewModal
                                                     bookingId={booking.id}
-                                                    instructorName={booking.instructor.user.firstName}
+                                                    instructorName={`${booking.instructor.user.firstName} ${booking.instructor.user.lastName}`}
                                                 >
                                                     <Button variant="outline" className="w-full" size="sm">
                                                         Calificar Clase ⭐
@@ -213,15 +213,21 @@ export default async function StudentBookingsPage() {
                                             <MapPin className="h-4 w-4" />
                                             <span>{booking.location.name}</span>
                                         </div>
-                                        {booking.status === BookingStatus.completed && (
+                                        {booking.status === BookingStatus.completed && !booking.review && (
                                             <ReviewModal
                                                 bookingId={booking.id}
-                                                instructorName={booking.instructor.user.firstName}
+                                                instructorName={`${booking.instructor.user.firstName} ${booking.instructor.user.lastName}`}
                                             >
                                                 <Button variant="outline" className="mt-2 w-full" size="sm">
                                                     Dejar Reseña
                                                 </Button>
                                             </ReviewModal>
+                                        )}
+
+                                        {booking.status === BookingStatus.completed && booking.review && (
+                                            <Button variant="ghost" className="mt-2 w-full" size="sm" disabled>
+                                                Clase Calificada ✅
+                                            </Button>
                                         )}
                                     </CardContent>
                                 </Card>

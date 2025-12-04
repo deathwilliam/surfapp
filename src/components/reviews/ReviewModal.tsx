@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Star } from 'lucide-react';
+import { Star, Send, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
@@ -100,6 +100,11 @@ export function ReviewModal({ bookingId, instructorName, children }: ReviewModal
                         onClick={handleSubmit}
                         disabled={rating === 0 || isSubmitting}
                     >
+                        {isSubmitting ? (
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        ) : (
+                            <Send className="mr-2 h-4 w-4" />
+                        )}
                         {isSubmitting ? 'Enviando...' : 'Enviar Reseña'}
                     </Button>
                 </DialogFooter>

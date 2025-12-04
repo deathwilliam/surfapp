@@ -18,6 +18,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { Save } from 'lucide-react';
 
 const profileSchema = z.object({
     bio: z.string().min(10, 'La biografía debe tener al menos 10 caracteres'),
@@ -169,6 +170,7 @@ export function ProfileForm({ initialData }: ProfileFormProps) {
                 />
 
                 <Button type="submit" disabled={isLoading}>
+                    <Save className="mr-2 h-4 w-4" />
                     {isLoading ? 'Guardando...' : 'Guardar Cambios'}
                 </Button>
             </form>

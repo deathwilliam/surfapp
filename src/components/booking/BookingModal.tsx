@@ -14,6 +14,7 @@ import { format, parseISO } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { X, Check, Loader2 } from 'lucide-react';
 
 interface TimeSlot {
     id: string;
@@ -121,9 +122,15 @@ export function BookingModal({
                 </div>
                 <DialogFooter>
                     <Button variant="outline" onClick={onClose} disabled={isLoading}>
+                        <X className="mr-2 h-4 w-4" />
                         Cancelar
                     </Button>
                     <Button onClick={handleConfirm} disabled={isLoading}>
+                        {isLoading ? (
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        ) : (
+                            <Check className="mr-2 h-4 w-4" />
+                        )}
                         {isLoading ? 'Confirmando...' : 'Confirmar Reserva'}
                     </Button>
                 </DialogFooter>
