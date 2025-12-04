@@ -65,18 +65,35 @@ export async function deleteLocation(id: string) {
     }
 
     // Check if location has dependencies (bookings, availability)
-    // For now, we'll just deactivate it if it has dependencies, or delete if not.
-    // Or simpler: just delete and let cascade handle it if configured, or fail.
-    // Given the schema, let's just delete. If it fails due to FK, we should handle it in UI.
-    // But for safety, let's just delete.
+    const location = await prisma.location.findUnique({
+        where: { id },
+        include: {
+            _count: {
+                select: { availabilities: true, bookings: true },
+            },
+        },
+    });
+
+    if (!location) {
+        throw new Error('Location not found');
+    }
 
     try {
-        await prisma.location.delete({
-            where: { id },
-        });
+        if (location._count.availabilities > 0 || location._count.bookings > 0) {
+            // Soft delete: Mark as inactive if there are dependencies
+            await prisma.location.update({
+                where: { id },
+                data: { isActive: false },
+            });
+        } else {
+            // Hard delete: Remove if no dependencies
+            await prisma.location.delete({
+                where: { id },
+            });
+        }
     } catch (error) {
-        console.error("Error deleting location:", error);
-        throw new Error("No se puede eliminar la ubicación porque tiene registros asociados.");
+        console.error("Error deleting/updating location:", error);
+        throw new Error("Error al procesar la ubicación.");
     }
 
     revalidatePath('/dashboard/admin/locations');
