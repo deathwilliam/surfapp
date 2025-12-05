@@ -1,6 +1,21 @@
 {
   "name": "surf-app-sv",
   "version": "0.1.0",
+  "description": "Full-stack surf instructor booking platform for El Salvador's Surf City. Connect students with certified surf instructors across El Salvador's best beaches.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/deathwilliam/surfapp.git"
+  },
+  "keywords": [
+    "surf",
+    "booking",
+    "el-salvador",
+    "surf-city",
+    "nextjs",
+    "prisma",
+    "instructor-platform"
+  ],
+  "author": "Wilfredo Melgar",
   "private": true,
   "scripts": {
     "dev": "next dev",
