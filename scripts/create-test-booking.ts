@@ -48,12 +48,12 @@ async function main() {
       startTime: availability.startTime,
       endTime: availability.endTime,
       status: BookingStatus.confirmed,
-      price: availability.instructor.hourlyRate * 2, // Assuming 2 hours
+      price: Number(availability.instructor.hourlyRate) * 2, // Assuming 2 hours
       payment: {
         create: {
-          amount: availability.instructor.hourlyRate * 2,
+          amount: Number(availability.instructor.hourlyRate) * 2,
           platformFee: 5.00,
-          instructorAmount: (availability.instructor.hourlyRate * 2) - 5.00,
+          instructorAmount: (Number(availability.instructor.hourlyRate) * 2) - 5.00,
           currency: 'USD',
           status: PaymentStatus.succeeded,
           stripePaymentIntentId: 'pi_mock_123456',
