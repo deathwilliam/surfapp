@@ -231,7 +231,7 @@ export default async function Home() {
               Únete a cientos de surfistas que ya están mejorando su técnica con los mejores instructores de Surf City
             </p>
             <Link href="/search">
-              <Button size="lg" className="mt-8 h-14 bg-white px-8 text-lg font-semibold text-primary hover:bg-white/90 hover:scale-105 transition-transform shadow-2xl border-2 border-white">
+              <Button size="lg" className="mt-8 h-14 bg-gradient-to-r from-[#00D4D4] to-[#00B8B8] px-8 text-lg font-semibold text-white hover:from-[#00B8B8] hover:to-[#008B8B] hover:scale-105 transition-transform shadow-2xl border-none">
                 <Waves className="mr-2 h-5 w-5" />
                 Comenzar Ahora
               </Button>
