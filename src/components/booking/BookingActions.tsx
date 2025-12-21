@@ -12,12 +12,18 @@ import {
 } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
 import { useRouter } from 'next/navigation';
-import { BookingStatus } from '@prisma/client';
 import { Check, X, CheckCircle, XCircle } from 'lucide-react';
+
+// Define status locally to avoid import issues in client component
+const STATUS_PENDING = 'pending';
+const STATUS_CONFIRMED = 'confirmed';
+const STATUS_COMPLETED = 'completed';
+const STATUS_NO_SHOW = 'no_show';
+const STATUS_CANCELLED = 'cancelled';
 
 interface BookingActionsProps {
     bookingId: string;
-    currentStatus: BookingStatus;
+    currentStatus: string; // Changed from BookingStatus enum to string
     isInstructor: boolean;
 }
 
@@ -27,7 +33,7 @@ export function BookingActions({ bookingId, currentStatus, isInstructor }: Booki
     const [showCancelDialog, setShowCancelDialog] = useState(false);
     const [cancellationReason, setCancellationReason] = useState('');
 
-    const updateStatus = async (newStatus: BookingStatus, reason?: string) => {
+    const updateStatus = async (newStatus: string, reason?: string) => {
         setIsLoading(true);
         try {
             const response = await fetch(`/api/bookings/${bookingId}/status`, {
@@ -59,16 +65,16 @@ export function BookingActions({ bookingId, currentStatus, isInstructor }: Booki
             alert('Por favor ingresa una razón de cancelación');
             return;
         }
-        updateStatus(BookingStatus.cancelled, cancellationReason);
+        updateStatus(STATUS_CANCELLED, cancellationReason);
     };
 
     return (
         <>
             <div className="flex gap-2 flex-wrap">
-                {isInstructor && currentStatus === BookingStatus.pending && (
+                {isInstructor && currentStatus === STATUS_PENDING && (
                     <Button
                         size="sm"
-                        onClick={() => updateStatus(BookingStatus.confirmed)}
+                        onClick={() => updateStatus(STATUS_CONFIRMED)}
                         disabled={isLoading}
                         className="bg-green-600 hover:bg-green-700"
                     >
@@ -77,10 +83,10 @@ export function BookingActions({ bookingId, currentStatus, isInstructor }: Booki
                     </Button>
                 )}
 
-                {isInstructor && currentStatus === BookingStatus.confirmed && (
+                {isInstructor && currentStatus === STATUS_CONFIRMED && (
                     <Button
                         size="sm"
-                        onClick={() => updateStatus(BookingStatus.completed)}
+                        onClick={() => updateStatus(STATUS_COMPLETED)}
                         disabled={isLoading}
                         className="bg-blue-600 hover:bg-blue-700"
                     >
@@ -89,11 +95,11 @@ export function BookingActions({ bookingId, currentStatus, isInstructor }: Booki
                     </Button>
                 )}
 
-                {isInstructor && currentStatus === BookingStatus.confirmed && (
+                {isInstructor && currentStatus === STATUS_CONFIRMED && (
                     <Button
                         size="sm"
                         variant="outline"
-                        onClick={() => updateStatus(BookingStatus.no_show)}
+                        onClick={() => updateStatus(STATUS_NO_SHOW)}
                         disabled={isLoading}
                     >
                         <XCircle className="h-4 w-4 mr-1" />
@@ -101,7 +107,7 @@ export function BookingActions({ bookingId, currentStatus, isInstructor }: Booki
                     </Button>
                 )}
 
-                {(currentStatus === BookingStatus.pending || currentStatus === BookingStatus.confirmed) && (
+                {(currentStatus === STATUS_PENDING || currentStatus === STATUS_CONFIRMED) && (
                     <Button
                         size="sm"
                         variant="destructive"
