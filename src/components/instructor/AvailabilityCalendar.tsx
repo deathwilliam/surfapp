@@ -114,7 +114,7 @@ export function AvailabilityCalendar({
                                         const d = new Date(slot.startTime);
                                         const h = d.getUTCHours().toString().padStart(2, '0');
                                         const m = d.getUTCMinutes().toString().padStart(2, '0');
-                                        return `${h}:${m}`;
+                                        return `Reservar ${h}:${m}`;
                                     })()}
                                 </Button>
                             ))}
