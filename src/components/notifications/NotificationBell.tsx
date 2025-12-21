@@ -13,6 +13,9 @@ import Link from 'next/link';
 import { formatDistanceToNow } from 'date-fns';
 import { es } from 'date-fns/locale';
 
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+
 interface Notification {
     id: string;
     type: string;
@@ -25,15 +28,19 @@ interface Notification {
 }
 
 export function NotificationBell() {
+    const { data: session } = useSession();
+    const router = useRouter();
     const [notifications, setNotifications] = useState<Notification[]>([]);
     const [unreadCount, setUnreadCount] = useState(0);
     const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
-        fetchNotifications();
-        const interval = setInterval(fetchNotifications, 30000);
-        return () => clearInterval(interval);
-    }, []);
+        if (session?.user) {
+            fetchNotifications();
+            const interval = setInterval(fetchNotifications, 30000);
+            return () => clearInterval(interval);
+        }
+    }, [session]);
 
     const fetchNotifications = async () => {
         try {
@@ -54,6 +61,22 @@ export function NotificationBell() {
             fetchNotifications();
         } catch (error) {
             console.error('Error marking as read:', error);
+        }
+    };
+
+    const handleNotificationClick = (notification: Notification) => {
+        if (!notification.isRead) {
+            markAsRead(notification.id);
+        }
+        setIsOpen(false);
+
+        // Navigate based on entity type and user role
+        if (notification.relatedEntityType === 'booking') {
+            if (session?.user?.userType === 'instructor') {
+                router.push('/dashboard/instructor/bookings');
+            } else {
+                router.push('/bookings');
+            }
         }
     };
 
@@ -90,12 +113,7 @@ export function NotificationBell() {
                                 key={notification.id}
                                 className={`border-b p-4 hover:bg-muted/50 cursor-pointer transition-colors ${!notification.isRead ? 'bg-blue-50/50' : ''
                                     }`}
-                                onClick={() => {
-                                    if (!notification.isRead) {
-                                        markAsRead(notification.id);
-                                    }
-                                    setIsOpen(false);
-                                }}
+                                onClick={() => handleNotificationClick(notification)}
                             >
                                 <div className="flex items-start justify-between gap-2">
                                     <div className="flex-1">
@@ -118,15 +136,6 @@ export function NotificationBell() {
                         ))
                     )}
                 </div>
-                {notifications.length > 0 && (
-                    <div className="border-t p-2">
-                        <Link href="/dashboard/notifications" onClick={() => setIsOpen(false)}>
-                            <Button variant="ghost" className="w-full text-sm">
-                                Ver todas las notificaciones
-                            </Button>
-                        </Link>
-                    </div>
-                )}
             </PopoverContent>
         </Popover>
     );

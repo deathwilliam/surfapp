@@ -17,6 +17,7 @@ interface BookingStatusEmailProps {
     instructorName: string;
     date: string;
     time: string;
+    dashboardUrl?: string;
 }
 
 export const BookingStatusEmail = ({
@@ -25,6 +26,7 @@ export const BookingStatusEmail = ({
     instructorName,
     date,
     time,
+    dashboardUrl = 'https://surfapp-two.vercel.app/bookings',
 }: BookingStatusEmailProps) => {
     const statusText = {
         confirmed: 'Confirmada',
@@ -61,7 +63,7 @@ export const BookingStatusEmail = ({
                         <Text style={paragraph}><strong>Hora:</strong> {time}</Text>
                     </Section>
 
-                    <Link href="https://surfapp-two.vercel.app/bookings" style={button}>
+                    <Link href={dashboardUrl} style={button}>
                         Ver Mis Reservas
                     </Link>
                 </Container>

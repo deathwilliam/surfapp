@@ -210,12 +210,30 @@ export async function PATCH(
                         react: BookingStatusEmail({
                             userName: booking.instructor.user.firstName,
                             status: status as any,
-                            instructorName: booking.instructor.user.firstName, // Context is different, but email template usage depends on design
+                            instructorName: booking.instructor.user.firstName,
                             date: new Date(booking.bookingDate).toLocaleDateString('es-ES'),
                             time: `${new Date(booking.startTime).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })} - ${new Date(booking.endTime).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}`,
+                            dashboardUrl: 'https://surfapp-two.vercel.app/dashboard/instructor/bookings',
                         }),
                     });
                 } else if (['confirmed', 'completed'].includes(status)) {
+                    // Send to recipient
+                    const dashboardUrl = isInstructor
+                        ? 'https://surfapp-two.vercel.app/dashboard/instructor/bookings' // Instructor confirmed/completed -> student gets email -> student link
+                        : 'https://surfapp-two.vercel.app/bookings'; // Student confirmed? (not possible usually for student to confirm) -> instructor gets email
+
+                    // Wait, logic check:
+                    // If instructor confirms, student gets email. Link should be student dashboard.
+                    // If instructor completes, student gets email. Link should be student dashboard.
+                    // `recipient` is defined as: const recipient = isInstructor ? booking.student : booking.instructor.user;
+
+                    // So if isInstructor (instructor action), recipient is student. Student needs /bookings.
+                    // If !isInstructor (student action - rare for confirm/complete??), recipient is instructor. Instructor needs /dashboard/instructor/bookings.
+
+                    const targetUrl = isInstructor
+                        ? 'https://surfapp-two.vercel.app/bookings'
+                        : 'https://surfapp-two.vercel.app/dashboard/instructor/bookings';
+
                     await resend.emails.send({
                         from: 'SurfConnect <bookings@resend.dev>',
                         to: recipient.email,
@@ -226,6 +244,7 @@ export async function PATCH(
                             instructorName: booking.instructor.user.firstName,
                             date: new Date(booking.bookingDate).toLocaleDateString('es-ES'),
                             time: `${new Date(booking.startTime).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })} - ${new Date(booking.endTime).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}`,
+                            dashboardUrl: targetUrl,
                         }),
                     });
                 }
