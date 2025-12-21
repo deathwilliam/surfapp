@@ -1,5 +1,6 @@
 import prisma from '@/lib/prisma';
 import { notFound } from 'next/navigation';
+import { startOfDay } from 'date-fns';
 import { InstructorHeader } from '@/components/instructor/InstructorHeader';
 import { BookingWidget } from '@/components/instructor/BookingWidget';
 import { Separator } from '@/components/ui/separator';
@@ -30,7 +31,7 @@ export default async function InstructorProfilePage({ params }: PageProps) {
         where: {
             instructorId: user.instructorProfile.id,
             date: {
-                gte: new Date(),
+                gte: startOfDay(new Date()),
             },
         },
         orderBy: {

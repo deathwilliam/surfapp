@@ -109,8 +109,15 @@ export function BookingModal({
                     <div className="grid grid-cols-4 items-center gap-4">
                         <span className="font-bold">Hora:</span>
                         <span className="col-span-3">
-                            {format(new Date(slot.startTime), 'HH:mm')} -{' '}
-                            {format(new Date(slot.endTime), 'HH:mm')}
+                            {(() => {
+                                const start = new Date(slot.startTime);
+                                const end = new Date(slot.endTime);
+                                const sh = start.getUTCHours().toString().padStart(2, '0');
+                                const sm = start.getUTCMinutes().toString().padStart(2, '0');
+                                const eh = end.getUTCHours().toString().padStart(2, '0');
+                                const em = end.getUTCMinutes().toString().padStart(2, '0');
+                                return `${sh}:${sm} - ${eh}:${em}`;
+                            })()}
                         </span>
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">

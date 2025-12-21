@@ -38,13 +38,18 @@ export function AvailabilityCalendar({
                 isSameDay(new Date(slot.date), date) &&
                 slot.isAvailable &&
                 slot.currentBookings < slot.maxStudents &&
-                new Date(slot.date) > new Date()
+                // If it's today, check if it's potentially still bookable
+                (isSameDay(new Date(slot.date), new Date()) || new Date(slot.date) > new Date())
         )
         .sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime());
 
     // Get days with available slots for highlighting
     const availableDays = slots
-        .filter((slot) => slot.isAvailable && slot.currentBookings < slot.maxStudents && new Date(slot.date) > new Date())
+        .filter((slot) =>
+            slot.isAvailable &&
+            slot.currentBookings < slot.maxStudents &&
+            (isSameDay(new Date(slot.date), new Date()) || new Date(slot.date) > new Date())
+        )
         .map((slot) => new Date(slot.date));
 
     return (
@@ -96,7 +101,12 @@ export function AvailabilityCalendar({
                                     onClick={() => onSelectSlot(slot)}
                                 >
                                     <Clock className="mr-2 h-4 w-4" />
-                                    {format(new Date(slot.startTime), 'HH:mm')}
+                                    {(() => {
+                                        const d = new Date(slot.startTime);
+                                        const h = d.getUTCHours().toString().padStart(2, '0');
+                                        const m = d.getUTCMinutes().toString().padStart(2, '0');
+                                        return `${h}:${m}`;
+                                    })()}
                                 </Button>
                             ))}
                         </div>
