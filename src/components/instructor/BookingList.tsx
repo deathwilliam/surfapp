@@ -19,6 +19,7 @@ interface Booking {
     startTime: Date;
     endTime: Date;
     status: BookingStatus;
+    cancellationReason: string | null;
     student: {
         firstName: string;
         lastName: string;
@@ -90,6 +91,7 @@ export function BookingList({ bookings }: BookingListProps) {
                                         bookingId={booking.id}
                                         currentStatus={booking.status}
                                         isInstructor={true}
+                                        cancellationReason={booking.cancellationReason}
                                     />
                                 </div>
                             </TableCell>

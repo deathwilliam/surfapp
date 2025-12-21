@@ -23,14 +23,16 @@ const STATUS_CANCELLED = 'cancelled';
 
 interface BookingActionsProps {
     bookingId: string;
-    currentStatus: string; // Changed from BookingStatus enum to string
+    currentStatus: string;
     isInstructor: boolean;
+    cancellationReason?: string | null;
 }
 
-export function BookingActions({ bookingId, currentStatus, isInstructor }: BookingActionsProps) {
+export function BookingActions({ bookingId, currentStatus, isInstructor, cancellationReason: initialReason }: BookingActionsProps) {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
     const [showCancelDialog, setShowCancelDialog] = useState(false);
+    const [showReasonDialog, setShowReasonDialog] = useState(false);
     const [cancellationReason, setCancellationReason] = useState('');
 
     const updateStatus = async (newStatus: string, reason?: string) => {
@@ -70,7 +72,18 @@ export function BookingActions({ bookingId, currentStatus, isInstructor }: Booki
 
     return (
         <>
-            <div className="flex gap-2 flex-wrap">
+            <div className="flex gap-2 flex-wrap justify-end">
+                {currentStatus === STATUS_CANCELLED && initialReason && (
+                    <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => setShowReasonDialog(true)}
+                        className="text-muted-foreground"
+                    >
+                        Ver Razón
+                    </Button>
+                )}
+
                 {isInstructor && currentStatus === STATUS_PENDING && (
                     <Button
                         size="sm"
@@ -150,6 +163,17 @@ export function BookingActions({ bookingId, currentStatus, isInstructor }: Booki
                             {isLoading ? 'Cancelando...' : 'Confirmar Cancelación'}
                         </Button>
                     </DialogFooter>
+                </DialogContent>
+            </Dialog>
+
+            <Dialog open={showReasonDialog} onOpenChange={setShowReasonDialog}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Razón de Cancelación</DialogTitle>
+                    </DialogHeader>
+                    <div className="p-4 bg-muted/20 rounded-md border">
+                        <p className="text-sm text-foreground">{initialReason}</p>
+                    </div>
                 </DialogContent>
             </Dialog>
         </>
