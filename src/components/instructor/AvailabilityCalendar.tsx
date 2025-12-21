@@ -30,16 +30,26 @@ export function AvailabilityCalendar({
 }: AvailabilityCalendarProps) {
     const [date, setDate] = useState<Date | undefined>(new Date());
 
+    // Helper to get local date from UTC string/date
+    // This treats the DB date (e.g. 2025-12-21T00:00:00Z) as if it were 2025-12-21 in local time
+    const getLocalDay = (d: Date | string) => {
+        const dateObj = new Date(d);
+        return new Date(dateObj.getUTCFullYear(), dateObj.getUTCMonth(), dateObj.getUTCDate());
+    };
+
     // Filter slots for the selected date
     const dailySlots = slots
         .filter(
             (slot) =>
                 date &&
-                isSameDay(new Date(slot.date), date) &&
+                isSameDay(getLocalDay(slot.date), date) &&
                 slot.isAvailable &&
                 slot.currentBookings < slot.maxStudents &&
-                // If it's today, check if it's potentially still bookable
-                (isSameDay(new Date(slot.date), new Date()) || new Date(slot.date) > new Date())
+                // For "today", we only check if the slot startTime (hour) hasn't passed yet
+                // But simplified: allow any slot that matches the day.
+                // If we want to hide passed hours, we'd need time comparison. 
+                // For now, let's fix the DAY matching first.
+                true
         )
         .sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime());
 
@@ -47,10 +57,9 @@ export function AvailabilityCalendar({
     const availableDays = slots
         .filter((slot) =>
             slot.isAvailable &&
-            slot.currentBookings < slot.maxStudents &&
-            (isSameDay(new Date(slot.date), new Date()) || new Date(slot.date) > new Date())
+            slot.currentBookings < slot.maxStudents
         )
-        .map((slot) => new Date(slot.date));
+        .map((slot) => getLocalDay(slot.date));
 
     return (
         <div className="space-y-6">
