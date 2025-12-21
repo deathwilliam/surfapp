@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { format, isSameDay } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { cn } from '@/lib/utils';
-import { CalendarDays, Clock } from 'lucide-react';
+import { CalendarDays, Clock, CalendarCheck } from 'lucide-react';
 
 interface TimeSlot {
     id: string;
@@ -70,7 +70,7 @@ export function AvailabilityCalendar({
                         Selecciona una fecha
                     </CardTitle>
                 </CardHeader>
-                <CardContent className="flex justify-center overflow-x-auto p-6">
+                <CardContent className="flex justify-center overflow-x-auto p-6 sm:p-8">
                     <Calendar
                         mode="single"
                         selected={date}
@@ -99,7 +99,7 @@ export function AvailabilityCalendar({
                         {date ? format(date, "d 'de' MMMM", { locale: es }) : 'Horarios'}
                     </CardTitle>
                 </CardHeader>
-                <CardContent className="p-6">
+                <CardContent className="p-6 sm:p-8">
                     {dailySlots.length > 0 ? (
                         <div className="grid grid-cols-2 gap-2">
                             {dailySlots.map((slot) => (
@@ -109,7 +109,7 @@ export function AvailabilityCalendar({
                                     className="w-full border-cyan-200 hover:bg-cyan-50 hover:border-cyan-500 hover:text-cyan-700 transition-all"
                                     onClick={() => onSelectSlot(slot)}
                                 >
-                                    <Clock className="mr-2 h-4 w-4" />
+                                    <CalendarCheck className="mr-2 h-4 w-4" />
                                     {(() => {
                                         const d = new Date(slot.startTime);
                                         const h = d.getUTCHours().toString().padStart(2, '0');
