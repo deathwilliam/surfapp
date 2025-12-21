@@ -108,32 +108,45 @@ export function NotificationBell() {
                             No tienes notificaciones
                         </div>
                     ) : (
-                        notifications.map((notification) => (
-                            <div
-                                key={notification.id}
-                                className={`border-b p-4 hover:bg-muted/50 cursor-pointer transition-colors ${!notification.isRead ? 'bg-blue-50/50' : ''
-                                    }`}
-                                onClick={() => handleNotificationClick(notification)}
-                            >
-                                <div className="flex items-start justify-between gap-2">
-                                    <div className="flex-1">
-                                        <p className="text-sm font-medium">{notification.title}</p>
-                                        <p className="text-sm text-muted-foreground mt-1">
-                                            {notification.message}
-                                        </p>
-                                        <p className="text-xs text-muted-foreground mt-2">
-                                            {formatDistanceToNow(new Date(notification.createdAt), {
-                                                addSuffix: true,
-                                                locale: es,
-                                            })}
-                                        </p>
+                        notifications.map((notification) => {
+                            let href = '#';
+                            if (notification.relatedEntityType === 'booking') {
+                                const userType = session?.user?.userType?.toLowerCase();
+                                if (userType === 'instructor') {
+                                    href = '/dashboard/instructor/bookings';
+                                } else {
+                                    href = '/bookings';
+                                }
+                            }
+
+                            return (
+                                <Link
+                                    key={notification.id}
+                                    href={href}
+                                    className={`block border-b p-4 hover:bg-muted/50 cursor-pointer transition-colors ${!notification.isRead ? 'bg-blue-50/50' : ''
+                                        }`}
+                                    onClick={() => handleNotificationClick(notification)}
+                                >
+                                    <div className="flex items-start justify-between gap-2">
+                                        <div className="flex-1">
+                                            <p className="text-sm font-medium">{notification.title}</p>
+                                            <p className="text-sm text-muted-foreground mt-1">
+                                                {notification.message}
+                                            </p>
+                                            <p className="text-xs text-muted-foreground mt-2">
+                                                {formatDistanceToNow(new Date(notification.createdAt), {
+                                                    addSuffix: true,
+                                                    locale: es,
+                                                })}
+                                            </p>
+                                        </div>
+                                        {!notification.isRead && (
+                                            <div className="h-2 w-2 rounded-full bg-primary flex-shrink-0 mt-1" />
+                                        )}
                                     </div>
-                                    {!notification.isRead && (
-                                        <div className="h-2 w-2 rounded-full bg-primary flex-shrink-0 mt-1" />
-                                    )}
-                                </div>
-                            </div>
-                        ))
+                                </Link>
+                            );
+                        })
                     )}
                 </div>
             </PopoverContent>
