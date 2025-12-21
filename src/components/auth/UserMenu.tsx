@@ -56,9 +56,16 @@ export function UserMenu() {
                     <Link href="/profile">Mi Perfil</Link>
                 </DropdownMenuItem>
                 {user.userType === UserType.student && (
-                    <DropdownMenuItem asChild>
-                        <Link href="/bookings">Mis Reservas</Link>
-                    </DropdownMenuItem>
+                    <>
+                        <DropdownMenuItem asChild>
+                            <Link href="/search" className="font-medium text-primary">
+                                Nueva Reserva 🏄‍♂️
+                            </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                            <Link href="/bookings">Mis Reservas</Link>
+                        </DropdownMenuItem>
+                    </>
                 )}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem

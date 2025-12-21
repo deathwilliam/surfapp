@@ -187,11 +187,39 @@ export async function PATCH(
                 const recipient = isInstructor ? booking.student : booking.instructor.user;
 
                 // Only send email for relevant statuses
-                if (['confirmed', 'cancelled', 'completed'].includes(status)) {
+                if (status === BookingStatus.cancelled) {
+                    // Send to Student
+                    await resend.emails.send({
+                        from: 'SurfConnect <bookings@resend.dev>',
+                        to: booking.student.email,
+                        subject: `Reserva Cancelada`,
+                        react: BookingStatusEmail({
+                            userName: booking.student.firstName,
+                            status: status as any,
+                            instructorName: booking.instructor.user.firstName,
+                            date: new Date(booking.bookingDate).toLocaleDateString('es-ES'),
+                            time: `${new Date(booking.startTime).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })} - ${new Date(booking.endTime).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}`,
+                        }),
+                    });
+
+                    // Send to Instructor
+                    await resend.emails.send({
+                        from: 'SurfConnect <bookings@resend.dev>',
+                        to: booking.instructor.user.email,
+                        subject: `Reserva Cancelada - ${booking.student.firstName} ${booking.student.lastName}`,
+                        react: BookingStatusEmail({
+                            userName: booking.instructor.user.firstName,
+                            status: status as any,
+                            instructorName: booking.instructor.user.firstName, // Context is different, but email template usage depends on design
+                            date: new Date(booking.bookingDate).toLocaleDateString('es-ES'),
+                            time: `${new Date(booking.startTime).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })} - ${new Date(booking.endTime).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}`,
+                        }),
+                    });
+                } else if (['confirmed', 'completed'].includes(status)) {
                     await resend.emails.send({
                         from: 'SurfConnect <bookings@resend.dev>',
                         to: recipient.email,
-                        subject: `Actualización de Reserva: ${status === 'confirmed' ? 'Confirmada' : status === 'cancelled' ? 'Cancelada' : 'Completada'}`,
+                        subject: `Actualización de Reserva: ${status === 'confirmed' ? 'Confirmada' : 'Completada'}`,
                         react: BookingStatusEmail({
                             userName: recipient.firstName,
                             status: status as any,

@@ -84,7 +84,9 @@ export default async function StudentDashboard() {
                     </p>
                 </div>
                 <Link href="/search">
-                    <Button>Buscar Instructores</Button>
+                    <Button className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white shadow-md transition-all hover:scale-105">
+                        Nueva Reserva 🏄‍♂️
+                    </Button>
                 </Link>
             </div>
 

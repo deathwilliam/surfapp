@@ -175,7 +175,9 @@ export default async function StudentBookingsPage() {
                                     Busca instructores y reserva tu próxima clase de surf
                                 </p>
                                 <Link href="/search">
-                                    <Button>Buscar Instructores</Button>
+                                    <Button className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md">
+                                        Nueva Reserva 🏄‍♂️
+                                    </Button>
                                 </Link>
                             </CardContent>
                         </Card>
