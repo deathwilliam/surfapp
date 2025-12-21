@@ -326,7 +326,57 @@ async function main() {
         },
     });
 
-    console.log('✅ Created 4 instructors with profiles');
+    const instructor5 = await prisma.user.create({
+        data: {
+            email: 'mario.zen@example.com',
+            passwordHash: await hashPassword('password123'),
+            firstName: 'Mario',
+            lastName: 'Sánchez',
+            phone: '+503 7890-1234',
+            userType: 'instructor',
+            emailVerified: new Date(),
+            instructorProfile: {
+                create: {
+                    bio: 'Especialista en Yoga & Surf. Mis clases combinan técnicas de respiración, flexibilidad y mindfulness para mejorar tu surfing.',
+                    experienceYears: 8,
+                    certifications: ['ISA Level 2 Surf Instructor', 'Certified Yoga Alliance Teacher', 'CPR'],
+                    specialties: ['Yoga Surf', 'Mindfulness', 'Flexibilidad'],
+                    hourlyRate: 30.0,
+                    isVerified: true,
+                    averageRating: 4.9,
+                    totalReviews: 28,
+                    totalClasses: 110,
+                },
+            },
+        },
+    });
+
+    const instructor6 = await prisma.user.create({
+        data: {
+            email: 'sofia.longboard@example.com',
+            passwordHash: await hashPassword('password123'),
+            firstName: 'Sofía',
+            lastName: 'Vega',
+            phone: '+503 7901-2345',
+            userType: 'instructor',
+            emailVerified: new Date(),
+            instructorProfile: {
+                create: {
+                    bio: 'Amante del estilo clásico. Te enseño a caminar sobre la tabla, Hang Five y el arte del Longboard.',
+                    experienceYears: 6,
+                    certifications: ['ISA Level 1 Surf Instructor', 'Longboard Specialty', 'First Aid'],
+                    specialties: ['Longboard', 'Estilo Clásico', 'Bailar sobre la tabla'],
+                    hourlyRate: 22.0,
+                    isVerified: true,
+                    averageRating: 4.8,
+                    totalReviews: 45,
+                    totalClasses: 135,
+                },
+            },
+        },
+    });
+
+    console.log('✅ Created 6 instructors with profiles');
 
     // Get instructor profiles
     const instructorProfiles = await prisma.instructorProfile.findMany({
@@ -430,6 +480,8 @@ async function main() {
     console.log('  • ana.waves@example.com / password123');
     console.log('  • diego.ocean@example.com / password123');
     console.log('  • lucia.beach@example.com / password123');
+    console.log('  • mario.zen@example.com / password123');
+    console.log('  • sofia.longboard@example.com / password123');
     console.log('\n👑 Admin:');
     console.log('  • admin@surfapp.com / admin123');
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');

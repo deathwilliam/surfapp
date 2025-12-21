@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Waves, Facebook, Instagram, Mail, MapPin, Phone } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 export function Footer() {
     const currentYear = new Date().getFullYear();
@@ -93,7 +94,13 @@ export function Footer() {
                             <li><Link href="/search" className="hover:text-primary transition-colors">Buscar Instructores</Link></li>
                             <li><Link href="/how-it-works" className="hover:text-primary transition-colors">Cómo funciona</Link></li>
                             <li><Link href="/register?type=instructor" className="hover:text-primary transition-colors">Ser Instructor</Link></li>
-                            <li><Link href="/register" className="hover:text-primary transition-colors">Registrarse</Link></li>
+                            <li className="pt-2">
+                                <Link href="/register" className="inline-block">
+                                    <Button size="sm" className="bg-gradient-to-r from-[#00D4D4] to-[#00B8B8] hover:from-[#00B8B8] hover:to-[#008B8B] text-white transition-all">
+                                        Registrarse
+                                    </Button>
+                                </Link>
+                            </li>
                         </ul>
                     </div>
 
