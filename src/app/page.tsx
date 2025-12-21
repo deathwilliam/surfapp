@@ -3,7 +3,7 @@ import { Footer } from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import Link from 'next/link';
-import { Waves, Calendar, Star, MapPin, Users, Award, Compass } from 'lucide-react';
+import { Waves, Calendar, Star, MapPin, Users, Award, Compass, Sparkles } from 'lucide-react';
 import prisma from '@/lib/prisma';
 
 // Landing page with dynamic beach locations
@@ -206,6 +206,60 @@ export default async function Home() {
                   Explorar Todas las Playas
                 </Button>
               </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* AI Advisor Promotion Section */}
+        <section className="py-20 bg-slate-50 overflow-hidden relative">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl"></div>
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent/5 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl"></div>
+
+          <div className="container relative z-10">
+            <div className="flex flex-col lg:flex-row items-center gap-12">
+              <div className="flex-1 text-left">
+                <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-emerald-100 px-4 py-2 text-emerald-700">
+                  <Sparkles className="h-4 w-4" />
+                  <span className="text-sm font-bold">Nuevo: AI Surf Advisor</span>
+                </div>
+                <h2 className="font-heading text-3xl font-bold md:text-4xl lg:text-5xl text-[#0E225C]">
+                  ¿No estás seguro de dónde surfear hoy?
+                </h2>
+                <p className="mt-6 text-xl text-muted-foreground leading-relaxed">
+                  Nuestro asistente experto conoce cada rincón de El Salvador. Desde el pronóstico en Punta Roca hasta la mejor pupusería en El Zonte.
+                </p>
+                <div className="mt-8 flex flex-col sm:flex-row gap-4">
+                  <Link href="/ai-advisor">
+                    <Button size="lg" className="h-14 bg-gradient-to-r from-[#0E225C] to-[#1E73BE] px-8 text-lg font-semibold text-white hover:scale-105 transition-transform shadow-xl">
+                      Consultar con el Experto
+                    </Button>
+                  </Link>
+                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                    <div className="flex -space-x-2">
+                      {[1, 2, 3].map(i => (
+                        <div key={i} className="h-8 w-8 rounded-full border-2 border-white bg-slate-200 overflow-hidden">
+                          <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i + 10}`} alt="User" />
+                        </div>
+                      ))}
+                    </div>
+                    <span>+500 consultas hoy</span>
+                  </div>
+                </div>
+              </div>
+              <div className="flex-1 relative">
+                <div className="relative z-10 rounded-3xl overflow-hidden shadow-2xl border-8 border-white">
+                  <img src="/images/beaches/el-sunzal.png" alt="Surf City AI" className="w-full h-auto aspect-[4/3] object-cover" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0E225C]/60 to-transparent"></div>
+                  <div className="absolute bottom-6 left-6 right-6 bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20">
+                    <p className="text-white text-sm font-medium italic">
+                      "El Sunzal es perfecto hoy para un longboard session. Waves are 3-4ft and glassy."
+                    </p>
+                  </div>
+                </div>
+                {/* Decorative Elements */}
+                <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-accent rounded-full -z-10 animate-blob"></div>
+                <div className="absolute -top-6 -left-6 w-24 h-24 bg-primary rounded-full -z-10 animate-blob animation-delay-2000"></div>
+              </div>
             </div>
           </div>
         </section>

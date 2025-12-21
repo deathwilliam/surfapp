@@ -72,6 +72,16 @@ export function Navbar() {
                             <span className="absolute -bottom-2 left-0 w-full h-0.5 bg-gradient-to-r from-[#00D4D4] to-[#FF6B35]" />
                         )}
                     </Link>
+                    <Link
+                        href="/ai-advisor"
+                        className={`relative transition-colors hover:text-primary ${isActive('/ai-advisor') ? 'text-primary' : ''
+                            }`}
+                    >
+                        AI Advisor
+                        {isActive('/ai-advisor') && (
+                            <span className="absolute -bottom-2 left-0 w-full h-0.5 bg-gradient-to-r from-[#00D4D4] to-[#FF6B35]" />
+                        )}
+                    </Link>
                 </nav>
 
                 {/* Desktop Actions */}
@@ -132,6 +142,15 @@ export function Navbar() {
                                 }`}
                         >
                             Cómo funciona
+                        </Link>
+                        <Link
+                            href="/ai-advisor"
+                            className={`px-4 py-2 rounded-md transition-colors ${isActive('/ai-advisor')
+                                ? 'bg-primary/10 text-primary font-medium'
+                                : 'hover:bg-accent'
+                                }`}
+                        >
+                            AI Advisor
                         </Link>
 
                         <div className="border-t pt-4 mt-2 flex flex-col gap-3">
