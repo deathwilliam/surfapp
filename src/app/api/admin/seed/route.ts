@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
 
         // Clean existing data
         console.log('🧹 Cleaning existing data...');
-        await prisma.auditLog.deleteMany();
+
         await prisma.notification.deleteMany();
         await prisma.message.deleteMany();
         await prisma.review.deleteMany();
