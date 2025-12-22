@@ -7,6 +7,9 @@ import { Button } from '@/components/ui/button';
 import { useSession } from 'next-auth/react';
 import { UserMenu } from '@/components/auth/UserMenu';
 import { NotificationBell } from '@/components/notifications/NotificationBell';
+import { ModeToggle } from '@/components/layout/ModeToggle';
+import { LanguageToggle } from '@/components/layout/LanguageToggle';
+import { useLanguage } from '@/components/providers/LanguageProvider';
 import { Menu, X, Waves } from 'lucide-react';
 
 export function Navbar() {
@@ -15,6 +18,7 @@ export function Navbar() {
     const pathname = usePathname();
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const { t } = useLanguage();
 
     // Handle scroll effect
     useEffect(() => {
@@ -57,7 +61,7 @@ export function Navbar() {
                         className={`relative transition-colors hover:text-primary ${isActive('/search') ? 'text-primary' : ''
                             }`}
                     >
-                        Buscar Instructores
+                        {t('search')}
                         {isActive('/search') && (
                             <span className="absolute -bottom-2 left-0 w-full h-0.5 bg-gradient-to-r from-[#00D4D4] to-[#FF6B35]" />
                         )}
@@ -67,7 +71,7 @@ export function Navbar() {
                         className={`relative transition-colors hover:text-primary ${isActive('/how-it-works') ? 'text-primary' : ''
                             }`}
                     >
-                        Cómo funciona
+                        {t('howItWorks')}
                         {isActive('/how-it-works') && (
                             <span className="absolute -bottom-2 left-0 w-full h-0.5 bg-gradient-to-r from-[#00D4D4] to-[#FF6B35]" />
                         )}
@@ -77,7 +81,7 @@ export function Navbar() {
                         className={`relative transition-colors hover:text-primary ${isActive('/ai-advisor') ? 'text-primary' : ''
                             }`}
                     >
-                        AI Advisor
+                        {t('advisor')}
                         {isActive('/ai-advisor') && (
                             <span className="absolute -bottom-2 left-0 w-full h-0.5 bg-gradient-to-r from-[#00D4D4] to-[#FF6B35]" />
                         )}
@@ -86,6 +90,8 @@ export function Navbar() {
 
                 {/* Desktop Actions */}
                 <div className="hidden md:flex items-center gap-4">
+                    <ModeToggle />
+                    <LanguageToggle />
                     {isAuthenticated ? (
                         <>
                             <NotificationBell />
@@ -95,12 +101,12 @@ export function Navbar() {
                         <>
                             <Link href="/login">
                                 <Button variant="ghost" size="sm" className="hover:text-primary">
-                                    Iniciar Sesión
+                                    {t('login')}
                                 </Button>
                             </Link>
                             <Link href="/register">
                                 <Button size="sm" className="bg-gradient-to-r from-[#00D4D4] to-[#00B8B8] hover:from-[#00B8B8] hover:to-[#008B8B] text-white transition-all">
-                                    Registrarse
+                                    {t('register')}
                                 </Button>
                             </Link>
                         </>
@@ -132,7 +138,7 @@ export function Navbar() {
                                 : 'hover:bg-accent'
                                 }`}
                         >
-                            Buscar Instructores
+                            {t('search')}
                         </Link>
                         <Link
                             href="/how-it-works"
@@ -141,7 +147,7 @@ export function Navbar() {
                                 : 'hover:bg-accent'
                                 }`}
                         >
-                            Cómo funciona
+                            {t('howItWorks')}
                         </Link>
                         <Link
                             href="/ai-advisor"
@@ -150,10 +156,14 @@ export function Navbar() {
                                 : 'hover:bg-accent'
                                 }`}
                         >
-                            AI Advisor
+                            {t('advisor')}
                         </Link>
 
                         <div className="border-t pt-4 mt-2 flex flex-col gap-3">
+                            <div className="flex gap-4 px-4">
+                                <ModeToggle />
+                                <LanguageToggle />
+                            </div>
                             {isAuthenticated ? (
                                 <div className="flex items-center gap-3 px-4">
                                     <NotificationBell />
@@ -163,12 +173,12 @@ export function Navbar() {
                                 <>
                                     <Link href="/login" className="w-full">
                                         <Button variant="outline" className="w-full">
-                                            Iniciar Sesión
+                                            {t('login')}
                                         </Button>
                                     </Link>
                                     <Link href="/register" className="w-full">
                                         <Button className="w-full bg-gradient-to-r from-[#00D4D4] to-[#00B8B8] text-white">
-                                            Registrarse
+                                            {t('register')}
                                         </Button>
                                     </Link>
                                 </>

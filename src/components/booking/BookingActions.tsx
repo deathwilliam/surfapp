@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
 import { useRouter } from 'next/navigation';
-import { Check, X, CheckCircle, XCircle } from 'lucide-react';
+import { Check, X, CheckCircle, XCircle, MessageSquare } from 'lucide-react';
 
 // Define status locally to avoid import issues in client component
 const STATUS_PENDING = 'pending';
@@ -68,6 +68,10 @@ export function BookingActions({ bookingId, currentStatus, isInstructor, cancell
             return;
         }
         updateStatus(STATUS_CANCELLED, cancellationReason);
+    };
+
+    const handleChat = () => {
+        router.push(`/dashboard/messages`);
     };
 
     return (

@@ -11,6 +11,8 @@ import { es } from 'date-fns/locale';
 import { BookingStatus } from '@prisma/client';
 import { BookingActions } from '@/components/booking/BookingActions';
 import { BookingStatusBadge } from '@/components/booking/BookingStatusBadge';
+import { ClearHistoryButton } from '@/components/booking/ClearHistoryButton';
+import { T } from '@/components/ui/T';
 
 async function getStudentBookings(userId: string) {
     const bookings = await prisma.booking.findMany({
@@ -68,22 +70,22 @@ export default async function StudentBookingsPage() {
             {/* Gradient Header */}
             <div className="bg-gradient-to-r from-cyan-500 to-blue-600 py-12 text-white">
                 <div className="container">
-                    <h1 className="font-heading text-4xl font-bold md:text-5xl">Mis Reservas</h1>
+                    <h1 className="font-heading text-4xl font-bold md:text-5xl"><T k="bookingsTitle" /></h1>
                     <p className="mt-3 text-lg text-blue-50">
-                        Gestiona tus clases de surf
+                        <T k="bookingsSubtitle" />
                     </p>
                 </div>
             </div>
 
             <div className="container py-10">
                 <div className="mb-8">
-                    <h1 className="font-heading text-3xl font-bold">Mis Reservas</h1>
-                    <p className="text-muted-foreground">Gestiona tus clases de surf</p>
+                    <h1 className="font-heading text-3xl font-bold"><T k="bookingsTitle" /></h1>
+                    <p className="text-muted-foreground"><T k="bookingsSubtitle" /></p>
                 </div>
 
                 {/* Upcoming Bookings */}
                 <div className="mb-10">
-                    <h2 className="mb-4 font-heading text-2xl font-bold">Próximas Clases</h2>
+                    <h2 className="mb-4 font-heading text-2xl font-bold"><T k="upcomingClasses" /></h2>
                     {upcomingBookings.length > 0 ? (
                         <div className="grid gap-4 md:grid-cols-2">
                             {upcomingBookings.map((booking) => (
@@ -137,13 +139,13 @@ export default async function StudentBookingsPage() {
                                                 isInstructor={false}
                                             />
 
-                                            {booking.status === BookingStatus.confirmed && (
-                                                <Link href={`/bookings/${booking.id}/chat`} className="w-full">
-                                                    <Button variant="secondary" className="w-full" size="sm">
-                                                        Chat con Instructor
-                                                    </Button>
-                                                </Link>
-                                            )}
+
+                                            <Link href={`/dashboard/messages/${booking.id}`} className="w-full">
+                                                <Button variant="secondary" className="w-full" size="sm">
+                                                    <T k="chatWithInstructor" />
+                                                </Button>
+                                            </Link>
+
 
                                             {booking.status === BookingStatus.completed && !booking.review && (
                                                 <ReviewModal
@@ -170,13 +172,13 @@ export default async function StudentBookingsPage() {
                         <Card>
                             <CardContent className="flex flex-col items-center justify-center py-10 text-center">
                                 <Calendar className="mb-4 h-12 w-12 text-muted-foreground" />
-                                <h3 className="mb-2 font-semibold">No tienes clases programadas</h3>
+                                <h3 className="mb-2 font-semibold"><T k="noBookings" /></h3>
                                 <p className="mb-4 text-sm text-muted-foreground">
-                                    Busca instructores y reserva tu próxima clase de surf
+                                    <T k="bookingsSubtitle" />
                                 </p>
                                 <Link href="/search">
                                     <Button className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md">
-                                        Nueva Reserva 🏄‍♂️
+                                        <T k="newBooking" />
                                     </Button>
                                 </Link>
                             </CardContent>
@@ -187,7 +189,10 @@ export default async function StudentBookingsPage() {
                 {/* Past Bookings */}
                 {pastBookings.length > 0 && (
                     <div>
-                        <h2 className="mb-4 font-heading text-2xl font-bold">Historial</h2>
+                        <div className="flex items-center justify-between mb-4">
+                            <h2 className="font-heading text-2xl font-bold"><T k="history" /></h2>
+                            <ClearHistoryButton />
+                        </div>
                         <div className="grid gap-4 md:grid-cols-2">
                             {pastBookings.map((booking) => (
                                 <Card key={booking.id} className="opacity-75">
@@ -215,6 +220,23 @@ export default async function StudentBookingsPage() {
                                             <MapPin className="h-4 w-4" />
                                             <span>{booking.location.name}</span>
                                         </div>
+
+                                        {/* Show action buttons for pending/confirmed bookings even in history */}
+                                        {(booking.status === BookingStatus.pending || booking.status === BookingStatus.confirmed) && (
+                                            <div className="flex flex-col gap-2 pt-2">
+                                                <BookingActions
+                                                    bookingId={booking.id}
+                                                    currentStatus={booking.status}
+                                                    isInstructor={false}
+                                                />
+                                                <Link href={`/dashboard/messages/${booking.id}`} className="w-full">
+                                                    <Button variant="secondary" className="w-full" size="sm">
+                                                        <T k="chatWithInstructor" />
+                                                    </Button>
+                                                </Link>
+                                            </div>
+                                        )}
+
                                         {booking.status === BookingStatus.completed && !booking.review && (
                                             <ReviewModal
                                                 bookingId={booking.id}

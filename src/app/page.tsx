@@ -5,20 +5,27 @@ import { Card, CardContent } from '@/components/ui/card';
 import Link from 'next/link';
 import { Waves, Calendar, Star, MapPin, Users, Award, Compass, Sparkles } from 'lucide-react';
 import prisma from '@/lib/prisma';
+import { T } from '@/components/ui/T';
 
 // Landing page with dynamic beach locations
 export default async function Home() {
-  const locations = await prisma.location.findMany({
-    where: { isActive: true },
-    take: 9,
-  });
+  let locations: any[] = [];
+  try {
+    locations = await prisma.location.findMany({
+      where: { isActive: true },
+      take: 9,
+    });
+  } catch (error) {
+    console.error("Failed to fetch locations:", error);
+    // Return empty or fallback
+  }
   return (
     <div className="flex min-h-screen flex-col">
       <Navbar />
 
       <main className="flex-1">
         {/* Hero Section with Surf City Gradient & Beach Background */}
-        <section className="relative overflow-hidden bg-gradient-to-br from-primary via-secondary to-accent py-24 md:py-32 lg:py-40">
+        <section className="relative overflow-hidden bg-gradient-to-br from-primary via-secondary to-accent py-16 md:py-20 lg:py-24">
           {/* Beach Background Image */}
           <div className="absolute inset-0 opacity-70">
             <div
@@ -36,32 +43,32 @@ export default async function Home() {
           <div className="container relative z-10 flex flex-col items-center text-center text-white">
             <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-white/20 px-4 py-2 backdrop-blur-sm">
               <Waves className="h-4 w-4" />
-              <span className="text-sm font-medium">Surf City - El Salvador 🇸🇻</span>
+              <span className="text-sm font-medium"><T k="heroBadge" /></span>
             </div>
 
             <h1 className="font-heading text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
-              Encuentra tu{' '}
+              <T k="heroTitle" />{' '}
               <span className="relative inline-block">
-                <span className="relative z-10">Instructor de Surf</span>
+                <span className="relative z-10"><T k="heroHighlight" /></span>
                 <span className="absolute bottom-2 left-0 h-3 w-full bg-accent/50"></span>
               </span>
             </h1>
 
             <p className="mt-6 max-w-[42rem] text-lg text-white/95 sm:text-xl md:text-2xl drop-shadow-lg">
-              Descubre las mejores olas de El Salvador. Conecta con instructores certificados en El Tunco, El Sunzal, Punta Roca y más.
+              <T k="heroSubtitle" />
             </p>
 
             <div className="mt-10 flex flex-col gap-4 sm:flex-row">
               <Link href="/search">
                 <Button size="lg" className="h-14 bg-white px-8 text-lg font-semibold hover:bg-white/90 hover:scale-105 transition-transform shadow-xl" style={{ color: '#00acc1' }}>
                   <Users className="mr-2 h-5 w-5" />
-                  Buscar Instructores
+                  <T k="searchInstructors" />
                 </Button>
               </Link>
               <Link href="/register?type=instructor">
                 <Button size="lg" className="h-14 bg-white px-8 text-lg font-semibold hover:bg-white/90 hover:scale-105 transition-transform shadow-xl" style={{ color: '#00acc1' }}>
                   <Award className="mr-2 h-5 w-5" />
-                  Soy Instructor
+                  <T k="imInstructor" />
                 </Button>
               </Link>
             </div>
@@ -70,15 +77,15 @@ export default async function Home() {
             <div className="mt-16 grid grid-cols-3 gap-8 md:gap-12">
               <div>
                 <div className="text-3xl font-bold md:text-4xl">500+</div>
-                <div className="mt-1 text-sm text-white/90">Clases Impartidas</div>
+                <div className="mt-1 text-sm text-white/90"><T k="statsClasses" /></div>
               </div>
               <div>
                 <div className="text-3xl font-bold md:text-4xl">50+</div>
-                <div className="mt-1 text-sm text-white/90">Instructores</div>
+                <div className="mt-1 text-sm text-white/90"><T k="statsInstructors" /></div>
               </div>
               <div>
                 <div className="text-3xl font-bold md:text-4xl">4.9</div>
-                <div className="mt-1 text-sm text-white/90">Rating Promedio</div>
+                <div className="mt-1 text-sm text-white/90"><T k="statsRating" /></div>
               </div>
             </div>
           </div>
@@ -92,14 +99,14 @@ export default async function Home() {
         </section>
 
         {/* Features Section */}
-        <section className="py-20 md:py-28">
+        <section className="py-12 md:py-16">
           <div className="container">
             <div className="mb-16 text-center">
               <h2 className="font-heading text-3xl font-bold md:text-4xl">
-                ¿Cómo Funciona?
+                <T k="howItWorksTitle" />
               </h2>
               <p className="mt-4 text-lg text-muted-foreground">
-                Tres simples pasos para comenzar tu aventura en el surf
+                <T k="howItWorksSubtitle" />
               </p>
             </div>
 
@@ -109,9 +116,9 @@ export default async function Home() {
                   <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-[#0E225C] to-[#1E73BE] text-white shadow-lg">
                     <MapPin className="h-8 w-8" />
                   </div>
-                  <h3 className="font-heading text-xl font-bold">1. Busca</h3>
+                  <h3 className="font-heading text-xl font-bold"><T k="step1Title" /></h3>
                   <p className="mt-3 text-muted-foreground">
-                    Encuentra instructores certificados por ubicación, precio y nivel de experiencia
+                    <T k="step1Desc" />
                   </p>
                 </CardContent>
               </Card>
@@ -121,9 +128,9 @@ export default async function Home() {
                   <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-[#0E225C] to-[#1E73BE] text-white shadow-lg">
                     <Calendar className="h-8 w-8" />
                   </div>
-                  <h3 className="font-heading text-xl font-bold">2. Reserva</h3>
+                  <h3 className="font-heading text-xl font-bold"><T k="step2Title" /></h3>
                   <p className="mt-3 text-muted-foreground">
-                    Elige el horario que mejor te convenga y confirma tu clase al instante
+                    <T k="step2Desc" />
                   </p>
                 </CardContent>
               </Card>
@@ -133,9 +140,9 @@ export default async function Home() {
                   <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-[#0E225C] to-[#1E73BE] text-white shadow-lg">
                     <Waves className="h-8 w-8" />
                   </div>
-                  <h3 className="font-heading text-xl font-bold">3. Surfea</h3>
+                  <h3 className="font-heading text-xl font-bold"><T k="step3Title" /></h3>
                   <p className="mt-3 text-muted-foreground">
-                    Disfruta de tu clase personalizada y califica tu experiencia
+                    <T k="step3Desc" />
                   </p>
                 </CardContent>
               </Card>
@@ -144,18 +151,18 @@ export default async function Home() {
         </section>
 
         {/* Surf Beaches Section */}
-        <section className="py-20 md:py-28 bg-gradient-to-b from-white to-blue-50/30">
+        <section className="py-12 md:py-16 bg-gradient-to-b from-white to-blue-50/30">
           <div className="container">
             <div className="mb-16 text-center">
               <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2">
                 <Compass className="h-4 w-4 text-primary" />
-                <span className="text-sm font-medium text-primary">Surf City El Salvador</span>
+                <span className="text-sm font-medium text-primary"><T k="beachesBadge" /></span>
               </div>
               <h2 className="font-heading text-3xl font-bold md:text-4xl">
-                Playas de Surf en El Salvador
+                <T k="beachesTitle" />
               </h2>
               <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-                Descubre las mejores olas de Centroamérica en nuestras playas de clase mundial
+                <T k="beachesSubtitle" />
               </p>
             </div>
 
@@ -203,7 +210,7 @@ export default async function Home() {
               <Link href="/search">
                 <Button size="lg" className="h-12 px-8">
                   <MapPin className="mr-2 h-5 w-5" />
-                  Explorar Todas las Playas
+                  <T k="exploreBeaches" />
                 </Button>
               </Link>
             </div>
@@ -211,7 +218,7 @@ export default async function Home() {
         </section>
 
         {/* AI Advisor Promotion Section */}
-        <section className="py-20 bg-slate-50 overflow-hidden relative">
+        <section className="py-12 md:py-16 bg-slate-50 overflow-hidden relative w-full">
           <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl"></div>
           <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent/5 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl"></div>
 
@@ -220,18 +227,18 @@ export default async function Home() {
               <div className="flex-1 text-left">
                 <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-emerald-100 px-4 py-2 text-emerald-700">
                   <Sparkles className="h-4 w-4" />
-                  <span className="text-sm font-bold">Nuevo: AI Surf Advisor</span>
+                  <span className="text-sm font-bold"><T k="aiBadge" /></span>
                 </div>
                 <h2 className="font-heading text-3xl font-bold md:text-4xl lg:text-5xl text-[#0E225C]">
-                  ¿No estás seguro de dónde surfear hoy?
+                  <T k="aiTitle" />
                 </h2>
                 <p className="mt-6 text-xl text-muted-foreground leading-relaxed">
-                  Nuestro asistente experto conoce cada rincón de El Salvador. Desde el pronóstico en Punta Roca hasta la mejor pupusería en El Zonte.
+                  <T k="aiDesc" />
                 </p>
                 <div className="mt-8 flex flex-col sm:flex-row gap-4">
                   <Link href="/ai-advisor">
                     <Button size="lg" className="h-14 bg-gradient-to-r from-[#0E225C] to-[#1E73BE] px-8 text-lg font-semibold text-white hover:scale-105 transition-transform shadow-xl">
-                      Consultar con el Experto
+                      <T k="aiCTA" />
                     </Button>
                   </Link>
                   <div className="flex items-center gap-4 text-sm text-muted-foreground">
@@ -242,23 +249,22 @@ export default async function Home() {
                         </div>
                       ))}
                     </div>
-                    <span>+500 consultas hoy</span>
+                    <span><T k="aiConsultations" /></span>
                   </div>
                 </div>
               </div>
-              <div className="flex-1 relative">
+              <div className="flex-1 relative max-w-lg mx-auto lg:max-w-none w-full">
                 <div className="relative z-10 rounded-3xl overflow-hidden shadow-2xl border-8 border-white">
                   <img src="/images/beaches/el-sunzal.png" alt="Surf City AI" className="w-full h-auto aspect-[4/3] object-cover" />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0E225C]/60 to-transparent"></div>
                   <div className="absolute bottom-6 left-6 right-6 bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20">
                     <p className="text-white text-sm font-medium italic">
-                      "El Sunzal es perfecto hoy para un longboard session. Waves are 3-4ft and glassy."
+                      <T k="sunzalCaption" />
                     </p>
                   </div>
                 </div>
                 {/* Decorative Elements */}
-                <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-accent rounded-full -z-10 animate-blob"></div>
-                <div className="absolute -top-6 -left-6 w-24 h-24 bg-primary rounded-full -z-10 animate-blob animation-delay-2000"></div>
+                {/* Decorative Elements Removed to prevent overflow */}
               </div>
             </div>
           </div>
@@ -266,7 +272,7 @@ export default async function Home() {
 
 
         {/* CTA Section with Surf City Gradient & Beach Background */}
-        <section className="relative overflow-hidden bg-gradient-to-r from-primary via-secondary to-accent py-20">
+        <section className="relative overflow-hidden bg-gradient-to-r from-primary via-secondary to-accent py-12 md:py-16">
           {/* Beach Background */}
           <div className="absolute inset-0 opacity-80">
             <div
@@ -279,15 +285,15 @@ export default async function Home() {
           <div className="container relative z-10 text-center text-white">
             <Star className="mx-auto mb-6 h-12 w-12 drop-shadow-lg" />
             <h2 className="font-heading text-3xl font-bold md:text-4xl drop-shadow-md">
-              ¿Listo para Conquistar las Olas de El Salvador?
+              <T k="finalCTATitle" />
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-lg text-white/95 drop-shadow">
-              Únete a cientos de surfistas que ya están mejorando su técnica con los mejores instructores de Surf City
+              <T k="finalCTADesc" />
             </p>
             <Link href="/search">
               <Button size="lg" className="mt-8 h-14 bg-gradient-to-r from-[#00D4D4] to-[#00B8B8] px-8 text-lg font-semibold text-white hover:from-[#00B8B8] hover:to-[#008B8B] hover:scale-105 transition-transform shadow-2xl border-none">
                 <Waves className="mr-2 h-5 w-5" />
-                Comenzar Ahora
+                <T k="startNow" />
               </Button>
             </Link>
           </div>

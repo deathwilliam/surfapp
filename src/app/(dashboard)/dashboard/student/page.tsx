@@ -3,12 +3,13 @@ import { redirect } from 'next/navigation';
 import prisma from '@/lib/prisma';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import Link from 'next/link';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Calendar, Clock, MapPin, TrendingUp, Award, DollarSign, MessageSquare } from 'lucide-react';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { BookingStatus } from '@prisma/client';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import Link from 'next/link';
+import { Badge } from '@/components/ui/badge';
 
 async function getStudentStats(userId: string) {
     const bookings = await prisma.booking.findMany({
@@ -167,9 +168,17 @@ export default async function StudentDashboard() {
                                             </p>
                                         </div>
                                     </div>
-                                    <div className="rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
-                                        Confirmada
-                                    </div>
+                                    <Badge
+                                        variant={
+                                            nextBooking.status === BookingStatus.confirmed
+                                                ? 'secondary'
+                                                : 'outline'
+                                        }
+                                    >
+                                        {nextBooking.status === BookingStatus.confirmed
+                                            ? 'Confirmada'
+                                            : 'Pendiente'}
+                                    </Badge>
                                 </div>
                             </CardHeader>
                             <CardContent className="space-y-4">
@@ -206,7 +215,7 @@ export default async function StudentDashboard() {
                                     </div>
                                 </div>
                                 <div className="flex gap-2">
-                                    <Link href={`/dashboard/messages?bookingId=${nextBooking.id}`} className="flex-1">
+                                    <Link href={`/dashboard/messages/${nextBooking.id}`} className="flex-1">
                                         <Button variant="outline" className="w-full">
                                             <MessageSquare className="mr-2 h-4 w-4" />
                                             Mensaje

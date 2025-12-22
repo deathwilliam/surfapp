@@ -151,15 +151,9 @@ export default async function InstructorBookingsPage() {
                                                     <div className="flex items-center gap-1">
                                                         <Clock className="h-4 w-4 text-muted-foreground" />
                                                         <span>
-                                                            {format(
-                                                                new Date(`1970-01-01T${booking.startTime}`),
-                                                                'HH:mm'
-                                                            )}{' '}
-                                                            -{' '}
-                                                            {format(
-                                                                new Date(`1970-01-01T${booking.endTime}`),
-                                                                'HH:mm'
-                                                            )}
+                                                            {format(new Date(booking.startTime), 'HH:mm')}
+                                                            {' '}-{' '}
+                                                            {format(new Date(booking.endTime), 'HH:mm')}
                                                         </span>
                                                     </div>
                                                     <div className="flex items-center gap-1">
@@ -223,10 +217,7 @@ export default async function InstructorBookingsPage() {
                                                     <div className="flex items-center gap-1">
                                                         <Clock className="h-4 w-4" />
                                                         <span>
-                                                            {format(
-                                                                new Date(`1970-01-01T${booking.startTime}`),
-                                                                'HH:mm'
-                                                            )}
+                                                            {format(new Date(booking.startTime), 'HH:mm')}
                                                         </span>
                                                     </div>
                                                     <div className="flex items-center gap-1">

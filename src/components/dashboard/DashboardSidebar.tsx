@@ -13,33 +13,56 @@ import {
     Shield,
     Users,
     BarChart,
-    MapPin
+    MapPin,
+    BookOpen
 } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { UserType } from '@prisma/client';
+import { useEffect, useState } from 'react';
+import { Badge } from '@/components/ui/badge';
+import { useLanguage } from '@/components/providers/LanguageProvider';
 
 export function DashboardSidebar() {
     const pathname = usePathname();
     const { data: session } = useSession();
     const userType = session?.user?.userType;
+    const { t } = useLanguage();
+    const [unreadMessages, setUnreadMessages] = useState(0);
+
+    useEffect(() => {
+        if (session?.user) {
+            const fetchUnread = async () => {
+                try {
+                    const res = await fetch('/api/messages/unread');
+                    if (res.ok) {
+                        const data = await res.json();
+                        setUnreadMessages(data.count);
+                    }
+                } catch (e) {
+                    console.error(e);
+                }
+            };
+            fetchUnread();
+            const interval = setInterval(fetchUnread, 10000); // 10s poll
+            return () => clearInterval(interval);
+        }
+    }, [session]);
 
     const instructorLinks = [
-        { href: '/dashboard/instructor', label: 'Overview', icon: LayoutDashboard },
-        { href: '/dashboard/instructor/profile', label: 'Perfil', icon: User },
-        { href: '/dashboard/instructor/availability', label: 'Disponibilidad', icon: Calendar },
-        { href: '/dashboard/messages', label: 'Mensajes', icon: MessageSquare },
+        { href: '/dashboard/instructor', label: t('dashboard'), icon: LayoutDashboard },
+        { href: '/dashboard/instructor/bookings', label: 'Mis Clases', icon: BookOpen },
+        { href: '/dashboard/instructor/profile', label: t('profile'), icon: User },
+        { href: '/dashboard/instructor/availability', label: t('availability'), icon: Calendar },
+        { href: '/dashboard/messages', label: t('messages'), icon: MessageSquare },
     ];
 
     const studentLinks = [
-        { href: '/dashboard/student', label: 'Overview', icon: LayoutDashboard },
-        { href: '/bookings', label: 'Mis Reservas', icon: Calendar },
-        { href: '/dashboard/messages', label: 'Mensajes', icon: MessageSquare },
+        { href: '/dashboard/student', label: t('dashboard'), icon: LayoutDashboard },
+        { href: '/bookings', label: t('myBookings'), icon: Calendar },
+        { href: '/dashboard/messages', label: t('messages'), icon: MessageSquare },
     ];
 
     const adminLinks = [
-        { href: '/dashboard/admin', label: 'Overview', icon: LayoutDashboard },
-        { href: '/dashboard/admin/users', label: 'Usuarios', icon: Users },
-        { href: '/dashboard/admin/instructors', label: 'Verificaciones', icon: Shield },
         { href: '/dashboard/admin/locations', label: 'Ubicaciones', icon: MapPin },
         { href: '/dashboard/admin/stats', label: 'Estadísticas', icon: BarChart },
     ];
@@ -59,19 +82,26 @@ export function DashboardSidebar() {
                     {links.map((link) => {
                         const Icon = link.icon;
                         const isActive = pathname === link.href;
+                        const isMessageLink = link.href === '/dashboard/messages';
+
                         return (
                             <Link
                                 key={link.href}
                                 href={link.href}
                                 className={cn(
-                                    "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200",
+                                    "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 relative",
                                     isActive
                                         ? "bg-primary/10 text-primary shadow-sm"
                                         : "text-muted-foreground hover:bg-primary/5 hover:text-primary"
                                 )}
                             >
                                 <Icon className="h-4 w-4" />
-                                {link.label}
+                                <span className="flex-1">{link.label}</span>
+                                {isMessageLink && unreadMessages > 0 && (
+                                    <Badge variant="destructive" className="h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs">
+                                        {unreadMessages > 9 ? '9+' : unreadMessages}
+                                    </Badge>
+                                )}
                             </Link>
                         );
                     })}

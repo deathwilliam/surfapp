@@ -11,9 +11,23 @@ export default async function BookingsPage() {
         redirect('/login');
     }
 
+    // First, get the instructor profile ID
+    const instructorProfile = await prisma.instructorProfile.findUnique({
+        where: {
+            userId: session.user.id,
+        },
+        select: {
+            id: true,
+        },
+    });
+
+    if (!instructorProfile) {
+        redirect('/login');
+    }
+
     const bookings = await prisma.booking.findMany({
         where: {
-            instructorId: session.user.id,
+            instructorId: instructorProfile.id,
         },
         include: {
             student: {

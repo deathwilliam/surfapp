@@ -153,7 +153,7 @@ export async function PATCH(
                     notificationMessage = `Tu reserva ha sido confirmada por ${booking.instructor.user.firstName}`;
                     break;
                 case BookingStatus.cancelled:
-                    notificationMessage = `Tu reserva ha sido cancelada`;
+                    notificationMessage = `Tu reserva ha sido cancelada. Razón: ${cancellationReason}`;
                     break;
                 case BookingStatus.completed:
                     notificationMessage = `Tu clase ha sido completada. ¡Deja una reseña!`;

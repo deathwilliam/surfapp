@@ -28,6 +28,7 @@ interface ChatWindowProps {
 }
 
 export function ChatWindow({ bookingId, otherUserName }: ChatWindowProps) {
+    console.log('[ChatWindow] Received props:', { bookingId, otherUserName });
     const { data: session } = useSession();
     const [messages, setMessages] = useState<Message[]>([]);
     const [newMessage, setNewMessage] = useState('');
@@ -50,6 +51,18 @@ export function ChatWindow({ bookingId, otherUserName }: ChatWindowProps) {
         }
     };
 
+    const markAsRead = async () => {
+        try {
+            await fetch('/api/messages/mark-read', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ bookingId }),
+            });
+        } catch (error) {
+            console.error('Error marking messages as read:', error);
+        }
+    };
+
     useEffect(() => {
         fetchMessages();
         const interval = setInterval(fetchMessages, 5000); // Poll every 5 seconds
@@ -58,28 +71,40 @@ export function ChatWindow({ bookingId, otherUserName }: ChatWindowProps) {
 
     useEffect(() => {
         scrollToBottom();
+        if (messages.length > 0) {
+            markAsRead();
+        }
     }, [messages]);
 
     const handleSendMessage = async () => {
         if (!newMessage.trim()) return;
 
+        const messageToSend = newMessage;
+        setNewMessage(''); // Clear immediately for better UX
         setIsLoading(true);
+
         try {
             const res = await fetch('/api/messages', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     bookingId,
-                    messageText: newMessage,
+                    messageText: messageToSend,
                 }),
             });
 
             if (res.ok) {
-                setNewMessage('');
                 fetchMessages(); // Refresh immediately
+            } else {
+                const error = await res.json();
+                console.error('Error sending message:', error);
+                alert('Error al enviar mensaje: ' + (error.error || 'Error desconocido'));
+                setNewMessage(messageToSend); // Restore message on error
             }
         } catch (error) {
             console.error('Error sending message:', error);
+            alert('Error al enviar mensaje. Por favor intenta de nuevo.');
+            setNewMessage(messageToSend); // Restore message on error
         } finally {
             setIsLoading(false);
         }
@@ -95,12 +120,7 @@ export function ChatWindow({ bookingId, otherUserName }: ChatWindowProps) {
     if (!session) return <div>Inicia sesión para ver los mensajes.</div>;
 
     return (
-        <Card className="flex h-[600px] flex-col">
-            <CardHeader className="border-b px-4 py-3">
-                <CardTitle className="text-base font-medium">
-                    Chat con {otherUserName}
-                </CardTitle>
-            </CardHeader>
+        <Card className="flex h-[500px] flex-col">
             <CardContent className="flex-1 overflow-y-auto p-4">
                 <div className="space-y-4">
                     {messages.map((message) => {
@@ -126,8 +146,8 @@ export function ChatWindow({ bookingId, otherUserName }: ChatWindowProps) {
                                     )}
                                     <div
                                         className={`rounded-lg px-4 py-2 ${isMe
-                                                ? 'bg-primary text-primary-foreground'
-                                                : 'bg-muted'
+                                            ? 'bg-primary text-primary-foreground'
+                                            : 'bg-muted'
                                             }`}
                                     >
                                         <p className="text-sm">{message.messageText}</p>

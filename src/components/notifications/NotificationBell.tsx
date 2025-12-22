@@ -69,15 +69,6 @@ export function NotificationBell() {
             markAsRead(notification.id);
         }
         setIsOpen(false);
-
-        // Navigate based on entity type and user role
-        if (notification.relatedEntityType === 'booking') {
-            if (session?.user?.userType === 'instructor') {
-                router.push('/dashboard/instructor/bookings');
-            } else {
-                router.push('/bookings');
-            }
-        }
     };
 
     return (
@@ -111,11 +102,15 @@ export function NotificationBell() {
                         notifications.map((notification) => {
                             let href = '#';
                             if (notification.relatedEntityType === 'booking') {
-                                const userType = session?.user?.userType?.toLowerCase();
-                                if (userType === 'instructor') {
-                                    href = '/dashboard/instructor/bookings';
+                                if (notification.type === 'new_message') {
+                                    href = `/bookings/${notification.relatedEntityId}/chat`;
                                 } else {
-                                    href = '/bookings';
+                                    const userType = session?.user?.userType?.toLowerCase();
+                                    if (userType === 'instructor') {
+                                        href = '/dashboard/instructor/bookings';
+                                    } else {
+                                        href = '/bookings';
+                                    }
                                 }
                             }
 

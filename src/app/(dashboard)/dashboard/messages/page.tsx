@@ -3,6 +3,8 @@ import { auth } from '@/lib/auth';
 import prisma from '@/lib/prisma';
 import { ConversationList } from '@/components/messages/ConversationList';
 
+export const dynamic = 'force-dynamic';
+
 export default async function MessagesPage() {
     const session = await auth();
     if (!session?.user?.id) {
@@ -51,30 +53,31 @@ export default async function MessagesPage() {
     });
 
     // Transform data for the view
-    const conversations = bookings.map((booking) => {
-        const otherUser = isInstructor
-            ? {
-                name: `${booking.student.firstName} ${booking.student.lastName}`,
-                image: booking.student.profileImageUrl,
-            }
-            : {
-                name: `${booking.instructor.user.firstName} ${booking.instructor.user.lastName}`,
-                image: booking.instructor.user.profileImageUrl,
-            };
-
-        return {
-            id: booking.id,
-            otherUser,
-            lastMessage: booking.messages[0]
+    const conversations = bookings
+        .map((booking) => {
+            const otherUser = isInstructor
                 ? {
-                    text: booking.messages[0].messageText,
-                    createdAt: booking.messages[0].createdAt,
+                    name: `${booking.student.firstName} ${booking.student.lastName}`,
+                    image: booking.student.profileImageUrl,
                 }
-                : undefined,
-            bookingDate: booking.bookingDate,
-            status: booking.status,
-        };
-    });
+                : {
+                    name: `${booking.instructor.user.firstName} ${booking.instructor.user.lastName}`,
+                    image: booking.instructor.user.profileImageUrl,
+                };
+
+            return {
+                id: booking.id,
+                otherUser,
+                lastMessage: booking.messages[0]
+                    ? {
+                        text: booking.messages[0].messageText,
+                        createdAt: booking.messages[0].createdAt,
+                    }
+                    : undefined,
+                bookingDate: booking.bookingDate,
+                status: booking.status,
+            };
+        });
 
     return (
         <div className="container py-6">

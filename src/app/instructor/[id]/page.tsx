@@ -40,6 +40,8 @@ export default async function InstructorProfilePage({ params }: PageProps) {
         take: 30,
     });
 
+
+
     // Fetch reviews
     const reviews = await prisma.review.findMany({
         where: {

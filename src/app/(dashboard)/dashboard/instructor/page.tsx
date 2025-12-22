@@ -46,13 +46,13 @@ async function getInstructorStats(userId: string) {
     const totalHours = completedBookings.length * 2; // Assuming 2 hours per session
     const totalEarnings = completedBookings.reduce((acc, curr) => acc + Number(curr.price), 0);
 
-    // Upcoming classes
+    // Show all Confirmed bookings (even past ones that haven't been completed yet) 
+    // AND future Pending bookings
     const upcomingClasses = bookings
         .filter(
             (b) =>
-                new Date(b.bookingDate) >= now &&
-                b.status !== BookingStatus.cancelled &&
-                b.status !== BookingStatus.completed
+                b.status === BookingStatus.confirmed ||
+                (new Date(b.bookingDate) >= now && b.status === BookingStatus.pending)
         )
         .sort((a, b) => new Date(a.bookingDate).getTime() - new Date(b.bookingDate).getTime())
         .slice(0, 5);
