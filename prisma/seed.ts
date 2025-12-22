@@ -14,7 +14,7 @@ async function main() {
 
     // Clean existing data (in development)
     console.log('🧹 Cleaning existing data...');
-    await prisma.auditLog.deleteMany();
+
     await prisma.notification.deleteMany();
     await prisma.message.deleteMany();
     await prisma.review.deleteMany();
