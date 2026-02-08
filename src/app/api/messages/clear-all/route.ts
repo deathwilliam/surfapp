@@ -9,7 +9,7 @@ export async function DELETE(request: Request) {
     }
 
     try {
-        console.log(`[CLEAR ALL] User: ${session.user.id} requesting clear all.`);
+        // console.log(`[CLEAR ALL] User: ${session.user.id} requesting clear all.`);
 
         // Delete all messages where the user is sender or receiver
         const deleted = await prisma.message.deleteMany({

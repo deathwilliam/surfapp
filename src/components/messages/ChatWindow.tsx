@@ -28,7 +28,7 @@ interface ChatWindowProps {
 }
 
 export function ChatWindow({ bookingId, otherUserName }: ChatWindowProps) {
-    console.log('[ChatWindow] Received props:', { bookingId, otherUserName });
+    // console.log('[ChatWindow] Received props:', { bookingId, otherUserName });
     const { data: session } = useSession();
     const [messages, setMessages] = useState<Message[]>([]);
     const [newMessage, setNewMessage] = useState('');

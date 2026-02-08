@@ -11,7 +11,7 @@ interface ChatPageClientProps {
 }
 
 export function ChatPageClient({ bookingId, otherUserName }: ChatPageClientProps) {
-    console.log('[ChatPageClient] Received props:', { bookingId, otherUserName });
+    // console.log('[ChatPageClient] Received props:', { bookingId, otherUserName });
 
     return (
         <div className="container py-6">

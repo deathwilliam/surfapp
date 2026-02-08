@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
                     react: WelcomeEmail({ firstName: user.firstName }),
                 });
             } else {
-                console.log('RESEND_API_KEY not found, skipping email');
+                // console.log('RESEND_API_KEY not found, skipping email');
             }
         } catch (emailError) {
             console.error('Error sending welcome email:', emailError);

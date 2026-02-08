@@ -11,7 +11,7 @@ export async function DELETE(request: Request) {
     try {
         const { searchParams } = new URL(request.url);
         const bookingId = searchParams.get('bookingId');
-        console.log(`[DELETE MSG] Request for bookingId: ${bookingId}. User: ${session.user.id}`);
+        // console.log(`[DELETE MSG] Request for bookingId: ${bookingId}. User: ${session.user.id}`);
 
         if (!bookingId) {
             return NextResponse.json({ error: 'Booking ID required' }, { status: 400 });

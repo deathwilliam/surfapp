@@ -14,7 +14,7 @@ export async function DELETE(request: Request) {
 
     try {
         if (statusParam === 'cancelled') {
-            console.log('[Cleanup] Deleting cancelled bookings for user:', session.user.id);
+            // console.log('[Cleanup] Deleting cancelled bookings for user:', session.user.id);
 
             // First, get all cancelled booking IDs
             const cancelledBookings = await prisma.booking.findMany({

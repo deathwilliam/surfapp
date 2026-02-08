@@ -13,7 +13,7 @@ export default async function ChatPage({ params }: { params: Promise<{ bookingId
 
     const { bookingId } = await params;
 
-    console.log('[ChatPage] Received bookingId:', bookingId);
+    // console.log('[ChatPage] Received bookingId:', bookingId);
 
     // Verify user has access to this booking
     const booking = await prisma.booking.findFirst({

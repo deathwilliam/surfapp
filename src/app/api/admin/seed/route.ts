@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
             );
         }
 
-        console.log('🌊 Starting database seed via API...');
+        // console.log('🌊 Starting database seed via API...');
 
         // Clean existing data
         console.log('🧹 Cleaning existing data...');

@@ -1,43 +1,44 @@
 import { NextResponse } from 'next/server';
+import { getToken } from 'next-auth/jwt';
+import type { NextRequest } from 'next/server';
 
-// Lightweight Edge middleware: check session and enforce role-based redirects.
-// Uses the user-role cookie set at login to avoid importing heavy auth/prisma.
+// Secure Edge middleware using JWT token validation
+// Validates session and role from cryptographically signed token
 
-export default function middleware(req: any) {
-    const cookieHeader = req.headers?.get?.('cookie') || '';
+export async function middleware(req: NextRequest) {
     const path = req.nextUrl.pathname;
 
-    // Check for NextAuth session cookie
-    const hasSession =
-        cookieHeader.includes('__Secure-next-auth.session-token') ||
-        cookieHeader.includes('next-auth.session-token') ||
-        cookieHeader.includes('authjs.session-token') ||
-        cookieHeader.includes('__Secure-authjs.session-token');
+    // Get JWT token (validates signature automatically)
+    const token = await getToken({
+        req,
+        secret: process.env.NEXTAUTH_SECRET,
+    });
 
-    if (!hasSession) {
-        return NextResponse.redirect(new URL('/login', req.url));
+    // No valid token = redirect to login
+    if (!token) {
+        const loginUrl = new URL('/login', req.url);
+        loginUrl.searchParams.set('callbackUrl', path);
+        return NextResponse.redirect(loginUrl);
     }
 
-    // Extract user-role cookie value (format: "user-role=<role>; ...")
-    let userRole = '';
-    const cookies = cookieHeader.split(';');
-    for (const cookie of cookies) {
-        const trimmed = cookie.trim();
-        if (trimmed.startsWith('user-role=')) {
-            userRole = trimmed.substring('user-role='.length).trim();
-            break;
-        }
-    }
+    // Extract role from verified token (not spoofeable)
+    const userRole = token.role as string | undefined;
 
-    // Role-based redirects
-    if (userRole) {
-        if (path.startsWith('/dashboard/instructor') && userRole !== 'instructor') {
+    // Role-based access control
+    if (path.startsWith('/dashboard/instructor')) {
+        if (userRole !== 'instructor' && userRole !== 'admin') {
             return NextResponse.redirect(new URL('/dashboard/student', req.url));
         }
-        if (path.startsWith('/dashboard/student') && userRole !== 'student') {
+    }
+
+    if (path.startsWith('/dashboard/student')) {
+        if (userRole !== 'student' && userRole !== 'admin') {
             return NextResponse.redirect(new URL('/dashboard/instructor', req.url));
         }
-        if (path.startsWith('/dashboard/admin') && userRole !== 'admin') {
+    }
+
+    if (path.startsWith('/dashboard/admin')) {
+        if (userRole !== 'admin') {
             return NextResponse.redirect(new URL('/', req.url));
         }
     }
@@ -53,3 +54,4 @@ export const config = {
         '/messages/:path*',
     ],
 };
+
