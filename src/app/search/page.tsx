@@ -20,15 +20,11 @@ async function getInstructors(searchParams: {
 }) {
     const { locationId, minPrice, maxPrice, level } = searchParams;
 
-    const where: any = {
-        userType: UserType.instructor,
-        instructorProfile: {
-            isNot: null,
-        },
-    };
+    // Build where clause for InstructorProfile
+    const where: any = {};
 
     if (locationId && locationId !== 'all') {
-        where.instructorProfile.availability = {
+        where.availability = {
             some: {
                 locationId: locationId,
             },
@@ -36,45 +32,47 @@ async function getInstructors(searchParams: {
     }
 
     if (minPrice || maxPrice) {
-        where.instructorProfile.hourlyRate = {};
-        if (minPrice) where.instructorProfile.hourlyRate.gte = parseFloat(minPrice);
-        if (maxPrice) where.instructorProfile.hourlyRate.lte = parseFloat(maxPrice);
+        where.hourlyRate = {};
+        if (minPrice) where.hourlyRate.gte = parseFloat(minPrice);
+        if (maxPrice) where.hourlyRate.lte = parseFloat(maxPrice);
     }
 
     if (level && level !== 'all') {
-        where.instructorProfile.specialties = {
+        where.specialties = {
             has: level,
         };
     }
 
-    const instructors = await prisma.user.findMany({
+    // Query from InstructorProfile and include User
+    const profiles = await prisma.instructorProfile.findMany({
         where,
         select: {
             id: true,
-            firstName: true,
-            lastName: true,
-            profileImageUrl: true,
-            instructorProfile: {
+            bio: true,
+            hourlyRate: true,
+            averageRating: true,
+            totalReviews: true,
+            specialties: true,
+            user: {
                 select: {
-                    bio: true,
-                    hourlyRate: true,
-                    averageRating: true,
-                    totalReviews: true,
-                    specialties: true,
+                    id: true,
+                    firstName: true,
+                    lastName: true,
+                    profileImageUrl: true,
                 },
             },
         },
     });
 
-    return instructors.map((inst) => ({
-        id: inst.id,
-        name: `${inst.firstName} ${inst.lastName}`,
-        image: inst.profileImageUrl,
-        bio: inst.instructorProfile?.bio || '',
-        hourlyRate: Number(inst.instructorProfile?.hourlyRate) || 0,
-        rating: Number(inst.instructorProfile?.averageRating) || 0,
-        reviewCount: inst.instructorProfile?.totalReviews || 0,
-        specialties: (inst.instructorProfile?.specialties as string[]) || [],
+    return profiles.map((profile) => ({
+        id: profile.user.id,
+        name: `${profile.user.firstName} ${profile.user.lastName}`,
+        image: profile.user.profileImageUrl,
+        bio: profile.bio || '',
+        hourlyRate: Number(profile.hourlyRate) || 0,
+        rating: Number(profile.averageRating) || 0,
+        reviewCount: profile.totalReviews || 0,
+        specialties: (profile.specialties as string[]) || [],
         locations: [],
     }));
 }
