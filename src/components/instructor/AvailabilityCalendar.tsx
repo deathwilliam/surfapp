@@ -5,9 +5,10 @@ import { Calendar } from '@/components/ui/calendar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { format, isSameDay } from 'date-fns';
-import { es } from 'date-fns/locale';
+import { es, enUS } from 'date-fns/locale';
 import { cn } from '@/lib/utils';
 import { CalendarDays, Clock, CalendarCheck } from 'lucide-react';
+import { useLanguage } from '@/components/providers/LanguageProvider';
 
 interface TimeSlot {
     id: string;
@@ -34,6 +35,8 @@ export function AvailabilityCalendar({
         }
         return new Date();
     });
+    const { t, language } = useLanguage();
+    const dateLocale = language === 'es' ? es : enUS;
 
     // Filter slots for the selected date
     const dailySlots = slots
@@ -60,7 +63,7 @@ export function AvailabilityCalendar({
                 <CardHeader className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white">
                     <CardTitle className="flex items-center gap-2">
                         <CalendarDays className="h-5 w-5" />
-                        Selecciona una fecha
+                        {t('selectDate')}
                     </CardTitle>
                 </CardHeader>
                 <CardContent className="flex justify-center overflow-x-auto p-6 sm:p-8">
@@ -68,7 +71,7 @@ export function AvailabilityCalendar({
                         mode="single"
                         selected={date}
                         onSelect={setDate}
-                        locale={es}
+                        locale={dateLocale}
                         disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
                         modifiers={{
                             available: availableDays,
@@ -89,7 +92,7 @@ export function AvailabilityCalendar({
                 <CardHeader className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white">
                     <CardTitle className="flex items-center gap-2">
                         <Clock className="h-5 w-5" />
-                        {date ? format(date, "d 'de' MMMM", { locale: es }) : 'Horarios'}
+                        {date ? format(date, language === 'es' ? "d 'de' MMMM" : "MMMM d", { locale: dateLocale }) : t('schedules')}
                     </CardTitle>
                 </CardHeader>
                 <CardContent className="p-6 sm:p-8">
@@ -107,7 +110,7 @@ export function AvailabilityCalendar({
                                         const d = new Date(slot.startTime);
                                         const h = d.getUTCHours().toString().padStart(2, '0');
                                         const m = d.getUTCMinutes().toString().padStart(2, '0');
-                                        return `Reservar ${h}:${m}`;
+                                        return `${t('bookAt')} ${h}:${m}`;
                                     })()}
                                 </Button>
                             ))}
@@ -118,10 +121,10 @@ export function AvailabilityCalendar({
                                 <Clock className="h-6 w-6 text-cyan-600" />
                             </div>
                             <p className="text-sm font-medium text-muted-foreground">
-                                No hay horarios disponibles para esta fecha.
+                                {t('noSchedules')}
                             </p>
                             <p className="mt-1 text-xs text-muted-foreground">
-                                Selecciona otra fecha del calendario
+                                {t('selectOtherDate')}
                             </p>
                         </div>
                     )}

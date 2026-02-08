@@ -11,10 +11,12 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { format, parseISO } from 'date-fns';
-import { es } from 'date-fns/locale';
+import { es, enUS } from 'date-fns/locale';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { X, Check, Loader2, User, Calendar, Clock, DollarSign } from 'lucide-react';
+import { Check, Loader2, User, Calendar, Clock, DollarSign } from 'lucide-react';
+import { toast } from 'sonner';
+import { useLanguage } from '@/components/providers/LanguageProvider';
 
 interface TimeSlot {
     id: string;
@@ -43,6 +45,8 @@ export function BookingModal({
     const { data: session } = useSession();
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
+    const { t, language } = useLanguage();
+    const dateLocale = language === 'es' ? es : enUS;
 
     if (!slot) return null;
 
@@ -67,12 +71,13 @@ export function BookingModal({
                 throw new Error('Error al crear la reserva');
             }
 
+            toast.success(t('bookingSuccess'));
             onClose();
             router.push('/dashboard/student?booking=success');
             router.refresh();
         } catch (error) {
             console.error('Booking error:', error);
-            // Here we should show an error toast
+            toast.error(t('bookingError'));
         } finally {
             setIsLoading(false);
         }
@@ -84,10 +89,10 @@ export function BookingModal({
                 <DialogHeader className="bg-gradient-to-r from-cyan-500 to-blue-600 p-6 text-white">
                     <DialogTitle className="text-xl flex items-center gap-2">
                         <Check className="h-5 w-5" />
-                        Confirmar Reserva
+                        {t('confirmBooking')}
                     </DialogTitle>
                     <DialogDescription className="text-blue-50">
-                        Revisa los detalles de tu clase antes de confirmar.
+                        {t('reviewDetails')}
                     </DialogDescription>
                 </DialogHeader>
 
@@ -99,7 +104,7 @@ export function BookingModal({
                                 <User className="h-4 w-4 text-cyan-600" />
                             </div>
                             <div>
-                                <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Instructor</p>
+                                <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">{t('instructorLabel')}</p>
                                 <p className="font-semibold text-gray-900">{instructor.name}</p>
                             </div>
                         </div>
@@ -110,12 +115,12 @@ export function BookingModal({
                                 <Calendar className="h-4 w-4 text-cyan-600" />
                             </div>
                             <div>
-                                <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Fecha</p>
+                                <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">{t('dateLabel')}</p>
                                 <p className="font-semibold text-gray-900 capitalize">
                                     {format(
                                         typeof slot.date === 'string' ? parseISO(slot.date) : slot.date,
-                                        "EEEE d 'de' MMMM",
-                                        { locale: es }
+                                        language === 'es' ? "EEEE d 'de' MMMM" : "EEEE, MMMM d",
+                                        { locale: dateLocale }
                                     )}
                                 </p>
                             </div>
@@ -127,7 +132,7 @@ export function BookingModal({
                                 <Clock className="h-4 w-4 text-cyan-600" />
                             </div>
                             <div>
-                                <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Hora</p>
+                                <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">{t('timeLabel')}</p>
                                 <p className="font-semibold text-gray-900">
                                     {(() => {
                                         const start = new Date(slot.startTime);
@@ -148,7 +153,7 @@ export function BookingModal({
                                 <DollarSign className="h-4 w-4 text-green-600" />
                             </div>
                             <div className="flex-1">
-                                <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Precio Total</p>
+                                <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">{t('totalPriceLabel')}</p>
                                 <p className="text-lg font-bold text-green-600">${instructor.hourlyRate}</p>
                             </div>
                         </div>
@@ -158,7 +163,7 @@ export function BookingModal({
                 <DialogFooter className="p-6 pt-0 bg-gray-50/50">
                     <div className="flex w-full gap-2">
                         <Button variant="outline" onClick={onClose} disabled={isLoading} className="flex-1">
-                            Cancelar
+                            {t('cancel')}
                         </Button>
                         <Button
                             onClick={handleConfirm}
@@ -170,7 +175,7 @@ export function BookingModal({
                             ) : (
                                 <Check className="mr-2 h-4 w-4" />
                             )}
-                            {isLoading ? 'Confirmando...' : 'Confirmar Reserva'}
+                            {isLoading ? t('confirming') : t('confirmBooking')}
                         </Button>
                     </div>
                 </DialogFooter>

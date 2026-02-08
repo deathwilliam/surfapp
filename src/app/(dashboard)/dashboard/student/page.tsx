@@ -38,10 +38,12 @@ async function getStudentStats(userId: string) {
         },
     });
 
-    const now = new Date();
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
     const completedBookings = bookings.filter((b) => b.status === BookingStatus.completed);
     const upcomingBookings = bookings.filter(
-        (b) => new Date(b.bookingDate) >= now && b.status !== BookingStatus.cancelled
+        (b) => new Date(b.bookingDate) >= today && b.status !== BookingStatus.cancelled
     );
     const nextBooking = upcomingBookings[0];
 

@@ -1,23 +1,42 @@
+import { Suspense } from 'react';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Waves, Calendar, Star, MapPin, Users, Award, Compass, Sparkles } from 'lucide-react';
 import prisma from '@/lib/prisma';
 import { T } from '@/components/ui/T';
+import { BeachLocations } from '@/components/landing/BeachLocations';
+import { BeachGridSkeleton } from '@/components/ui/skeleton';
 
-// Landing page with dynamic beach locations
+// Landing page with dynamic stats and beach locations
 export default async function Home() {
-  let locations: any[] = [];
+  let stats = { totalClasses: 0, totalInstructors: 0, avgRating: 0 };
+
   try {
-    locations = await prisma.location.findMany({
-      where: { isActive: true },
-      take: 9,
-    });
+    // Fetch only stats - locations are loaded with Suspense
+    const [classesCount, instructorsCount, ratingResult] = await Promise.all([
+      prisma.booking.count({
+        where: { status: 'completed' },
+      }),
+      prisma.instructorProfile.count({
+        where: { isVerified: true },
+      }),
+      prisma.review.aggregate({
+        _avg: { rating: true },
+      }),
+    ]);
+
+    stats = {
+      totalClasses: classesCount,
+      totalInstructors: instructorsCount,
+      avgRating: ratingResult._avg.rating ? Number(ratingResult._avg.rating.toFixed(1)) : 0,
+    };
   } catch (error) {
-    console.error("Failed to fetch locations:", error);
-    // Return empty or fallback
+    console.error("Failed to fetch stats:", error);
+    // Use fallback values
   }
   return (
     <div className="flex min-h-screen flex-col">
@@ -28,9 +47,13 @@ export default async function Home() {
         <section className="relative overflow-hidden bg-gradient-to-br from-primary via-secondary to-accent py-16 md:py-20 lg:py-24">
           {/* Beach Background Image */}
           <div className="absolute inset-0 opacity-70">
-            <div
-              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-              style={{ backgroundImage: 'url(/images/beaches/el-tunco.png)' }}
+            <Image
+              src="/images/beaches/el-tunco.png"
+              alt="El Tunco Beach"
+              fill
+              className="object-cover"
+              priority
+              sizes="100vw"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-primary/60 to-secondary/60" />
           </div>
@@ -76,15 +99,21 @@ export default async function Home() {
             {/* Stats */}
             <div className="mt-16 grid grid-cols-3 gap-8 md:gap-12">
               <div>
-                <div className="text-3xl font-bold md:text-4xl">500+</div>
+                <div className="text-3xl font-bold md:text-4xl">
+                  {stats.totalClasses > 0 ? `${stats.totalClasses}+` : '500+'}
+                </div>
                 <div className="mt-1 text-sm text-white/90"><T k="statsClasses" /></div>
               </div>
               <div>
-                <div className="text-3xl font-bold md:text-4xl">50+</div>
+                <div className="text-3xl font-bold md:text-4xl">
+                  {stats.totalInstructors > 0 ? `${stats.totalInstructors}+` : '50+'}
+                </div>
                 <div className="mt-1 text-sm text-white/90"><T k="statsInstructors" /></div>
               </div>
               <div>
-                <div className="text-3xl font-bold md:text-4xl">4.9</div>
+                <div className="text-3xl font-bold md:text-4xl">
+                  {stats.avgRating > 0 ? stats.avgRating : '4.9'}
+                </div>
                 <div className="mt-1 text-sm text-white/90"><T k="statsRating" /></div>
               </div>
             </div>
@@ -166,45 +195,9 @@ export default async function Home() {
               </p>
             </div>
 
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {locations.map((location) => (
-                <Card key={location.id} className="group overflow-hidden border-2 transition-all hover:border-primary hover:shadow-xl">
-                  <div className="relative h-48 overflow-hidden">
-                    <div
-                      className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-                      style={{ backgroundImage: `url(${location.imageUrl || '/images/placeholder-beach.jpg'})` }}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-black/20" />
-                    <div className="absolute bottom-4 left-4 right-4">
-                      <h3 className="font-heading text-2xl font-bold text-white drop-shadow-lg">{location.name}</h3>
-                      <p className="text-sm text-white/90">{location.city}</p>
-                    </div>
-                    {location.difficulty && (
-                      <div className="absolute top-4 right-4">
-                        <span className={`rounded-full px-3 py-1 text-xs font-semibold text-white ${location.difficulty === 'Experto' ? 'bg-red-500' :
-                          location.difficulty === 'Intermedio' ? 'bg-orange-500' :
-                            location.difficulty === 'Principiante' ? 'bg-green-500' :
-                              'bg-blue-500'
-                          }`}>
-                          {location.difficulty}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                  <CardContent className="p-6">
-                    <p className="text-sm text-muted-foreground line-clamp-3">
-                      {location.description}
-                    </p>
-                    {location.surfType && (
-                      <div className="mt-4 flex items-center gap-2 text-xs text-muted-foreground">
-                        <Waves className="h-4 w-4" />
-                        <span>{location.surfType}</span>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+            <Suspense fallback={<BeachGridSkeleton count={6} />}>
+              <BeachLocations />
+            </Suspense>
 
             <div className="mt-12 text-center">
               <Link href="/search">
@@ -275,9 +268,12 @@ export default async function Home() {
         <section className="relative overflow-hidden bg-gradient-to-r from-primary via-secondary to-accent py-12 md:py-16">
           {/* Beach Background */}
           <div className="absolute inset-0 opacity-80">
-            <div
-              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-              style={{ backgroundImage: 'url(/images/beaches/el-zonte.png)' }}
+            <Image
+              src="/images/beaches/el-zonte.png"
+              alt="El Zonte Beach"
+              fill
+              className="object-cover"
+              sizes="100vw"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-primary/70 to-secondary/70" />
           </div>

@@ -28,9 +28,9 @@ async function getInstructors(searchParams: {
     };
 
     if (locationId && locationId !== 'all') {
-        where.instructorProfile.locations = {
+        where.instructorProfile.availability = {
             some: {
-                id: locationId,
+                locationId: locationId,
             },
         };
     }

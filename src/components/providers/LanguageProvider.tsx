@@ -72,6 +72,23 @@ const translations = {
         finalCTATitle: "¿Listo para Conquistar las Olas de El Salvador?",
         finalCTADesc: "Únete a cientos de surfistas que ya están mejorando su técnica con los mejores instructores de Surf City",
         startNow: "Comenzar Ahora",
+        // Booking Modal
+        confirmBooking: "Confirmar Reserva",
+        reviewDetails: "Revisa los detalles de tu clase antes de confirmar.",
+        instructorLabel: "Instructor",
+        dateLabel: "Fecha",
+        timeLabel: "Hora",
+        totalPriceLabel: "Precio Total",
+        cancel: "Cancelar",
+        confirming: "Confirmando...",
+        bookingSuccess: "¡Reserva confirmada exitosamente!",
+        bookingError: "Error al crear la reserva. Por favor intenta de nuevo.",
+        // Availability Calendar
+        selectDate: "Selecciona una fecha",
+        schedules: "Horarios",
+        noSchedules: "No hay horarios disponibles para esta fecha.",
+        selectOtherDate: "Selecciona otra fecha del calendario",
+        bookAt: "Reservar",
     },
     en: {
         // Navbar
@@ -134,6 +151,23 @@ const translations = {
         finalCTATitle: "Ready to Conquer El Salvador's Waves?",
         finalCTADesc: "Join hundreds of surfers improving their technique with Surf City's best instructors",
         startNow: "Start Now",
+        // Booking Modal
+        confirmBooking: "Confirm Booking",
+        reviewDetails: "Review your lesson details before confirming.",
+        instructorLabel: "Instructor",
+        dateLabel: "Date",
+        timeLabel: "Time",
+        totalPriceLabel: "Total Price",
+        cancel: "Cancel",
+        confirming: "Confirming...",
+        bookingSuccess: "Booking confirmed successfully!",
+        bookingError: "Error creating booking. Please try again.",
+        // Availability Calendar
+        selectDate: "Select a date",
+        schedules: "Schedules",
+        noSchedules: "No schedules available for this date.",
+        selectOtherDate: "Select another date from the calendar",
+        bookAt: "Book at",
     },
 }
 

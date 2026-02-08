@@ -133,6 +133,16 @@ export async function PATCH(
                 },
             });
 
+            // If completed, increment instructor's total classes
+            if (status === BookingStatus.completed) {
+                await tx.instructorProfile.update({
+                    where: { id: booking.instructorId },
+                    data: {
+                        totalClasses: { increment: 1 },
+                    },
+                });
+            }
+
             // If cancelled, restore availability
             if (status === BookingStatus.cancelled && booking.availabilityId) {
                 await tx.instructorAvailability.update({
